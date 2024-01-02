@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import src.backend.Snake;
+import src.gui.Main;
 
 public class PlayBoard extends Application {
 

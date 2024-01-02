@@ -1,13 +1,13 @@
 package src.backend;
 
 public class Point {
-    
-    private int x;
-    private int y; 
 
-    public Point(int x, int y){
-        this.x = x; 
-        this.y = y; 
+    private int x;
+    private int y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {
@@ -18,10 +18,14 @@ public class Point {
         return y;
     }
 
+    public Point updatePoint(int dx, int dy) {
+        return new Point(x + dx, y + dy);
+    }
+
     public boolean equals(Point other) {
-        if(this.getX()==other.getX() && this.getY() == other.getY()){
+        if (this.getX() == other.getX() && this.getY() == other.getY()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

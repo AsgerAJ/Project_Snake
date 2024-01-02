@@ -2,21 +2,18 @@ package src.backend;
 import java.util.*;
 
 public class Snake {
-    private int score = 0;
-    public int direction = 0; // 0 <- , 1 ^ , 2 ->, 3 v
-    public int gridSizeX;
-    public int gridSizeY;
-    public ArrayList<Point> body = new ArrayList<Point>();
+    private int score;
+    private int xstart;
+    private int ystart;
+    private int direction = 0; // 0 <- , 1 ^ , 2 ->, 3 v
+    private ArrayList<Point> body = new ArrayList<Point>();
     private boolean alive;
     
-    public Snake(int xstart, int ystart, int gridSizeX, int gridSizeY){
-        this.gridSizeX = gridSizeX;
-        this.gridSizeY = gridSizeY;
+    public Snake(int xstart, int ystart){
+        this.body.add(new Point(xstart, ystart)); // head
+        this.body.add(new Point(xstart, ystart+1)); // tail
         this.alive = true;
-        for(int i = 0; i < 2; i++){
-            int[] section = {xstart, ystart + i};
-            this.body.add(section);
-        }
+        this.score = 0;
     }
 
     public void update(int direction, int oldDirection) { // google har 8 steps i sekundet
@@ -24,38 +21,39 @@ public class Snake {
         // if not on egde
 
         // new head
-        int[] oldHead = this.body.get(0);
-        int[] newHead = oldHead;
+
+        Point oldHead = this.body.get(0);
+        Point newHead = oldHead;
         switch (direction) { // handles movement of snake.
-            case 0:
-                if(newHead[0] - 1 < 0) {
-                    newHead[0] = this.gridSizeX - 1;
+            case 0: // left movement
+                if(newHead.getX() - 1 < 0) {
+                    newHead.setX(this.gridSizeX-1);
                 } else {
-                    newHead[0]--;
+                    newHead.updatePoint(-1,0);
                 }
                 break;
 
-            case 1:
-                if(newHead[1] + 1 > this.gridSizeY) {
-                    newHead[1] = 0;
+            case 1: // up movement
+                if(newHead.getY() + 1 > this.gridSizeY) {
+                    newHead.setY(0);
                 } else {
-                    newHead[1]++;
+                    newHead.updatePoint(0, 1);
                 }
                 break;
 
-            case 2:
-                if(newHead[0] + 1 > this.gridSizeX) {
-                    newHead[0] = 0;
+            case 2: // right movement
+                if(newHead.getX() + 1 > this.gridSizeX) {
+                    newHead.setX(0);
                 } else {
-                    newHead[0]++;
+                    newHead.updatePoint(1, 0);
                 }
                 break;
 
-            case 3:
-                if(newHead[1] - 1 < 0) {
-                    newHead[1] = this.gridSizeY - 1;
+            case 3: // down movement
+                if(newHead.getY() - 1 < 0) {
+                    newHead.setY(this.gridSizeY-1);
                 } else {
-                    newHead[1]--;
+                    newHead.updatePoint(0, -1);
                 }
                 break;
         
@@ -69,14 +67,31 @@ public class Snake {
     }
 
     public boolean collision() {
-        return false;
+        boolean collision = false;
+        for (int i = 0; i < this.body.size(); i++){
+            if(this.body.get(0).equals(this.body.get(i))){
+                collision = true;
+                break;
+            }else{
+                collision = false;
+            }
+        }
+        return collision;
     }
 
     public void grow() {
         
     }
     
-    public int[] getHead() {
+    public Point getHead() {
         return this.body.get(0);
+    }
+
+    public Point getPoint(int i){
+        return this.body.get(i);
+    }
+
+    public int getLength(){
+        return this.body.size();
     }
 }
