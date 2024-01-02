@@ -1,4 +1,3 @@
-import Snake;
 
 package src.gui;
 public class Main {
