@@ -5,10 +5,14 @@ import java.util.ArrayList;
  */
 public class Snake {
 
-
-
-    public Snake(int size){
+    public Snake(int size, int xstart, int ystart){
         int score = 0;
+        int direction = 0;
+        ArrayList<Integer> snake = new ArrayList<>();
+    }
+
+    public void step() {
+        
     }
 
     public boolean collision() {
