@@ -5,18 +5,19 @@ public class Snake {
     private int score;
     private int xstart;
     private int ystart;
-    private int direction = 0; // 0 <- , 1 ^ , 2 ->, 3 v
+    private Direction direction;
     private ArrayList<Point> body = new ArrayList<Point>();
     private boolean alive;
     
     public Snake(int xstart, int ystart){
+        this.direction = Direction.LEFT;
         this.body.add(new Point(xstart, ystart)); // head
         this.body.add(new Point(xstart, ystart+1)); // tail
         this.alive = true;
         this.score = 0;
     }
 
-    public void update(int direction, int oldDirection) { // google har 8 steps i sekundet
+    public void update(Direction direction, int oldDirection) { // google har 8 steps i sekundet
         // if målfelt is clear
         // if not on egde
 
@@ -25,7 +26,7 @@ public class Snake {
         Point oldHead = this.body.get(0);
         Point newHead = oldHead;
         switch (direction) { // handles movement of snake.
-            case 0: // left movement
+            case LEFT: // left movement
                 if(newHead.getX() - 1 < 0) {
                     newHead.setX(this.gridSizeX-1);
                 } else {
@@ -33,7 +34,7 @@ public class Snake {
                 }
                 break;
 
-            case 1: // up movement
+            case UP: // up movement
                 if(newHead.getY() + 1 > this.gridSizeY) {
                     newHead.setY(0);
                 } else {
@@ -41,7 +42,7 @@ public class Snake {
                 }
                 break;
 
-            case 2: // right movement
+            case RIGHT: // right movement
                 if(newHead.getX() + 1 > this.gridSizeX) {
                     newHead.setX(0);
                 } else {
@@ -49,7 +50,7 @@ public class Snake {
                 }
                 break;
 
-            case 3: // down movement
+            case DOWN: // down movement
                 if(newHead.getY() - 1 < 0) {
                     newHead.setY(this.gridSizeY-1);
                 } else {

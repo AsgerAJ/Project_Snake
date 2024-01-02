@@ -3,8 +3,8 @@ import src.backend.*;
 public class Main {
 
     public static void main(String[] args) {
-        int n = 10;
-        int m = 10;
+        int n = 11;
+        int m = 11;
         boolean[][] visualGrid = new boolean[n][m];
         Snake test = new Snake(n/2, m/2);
         primitivGrafix(visualGrid, test);
@@ -29,7 +29,8 @@ public class Main {
                 }
 
             }
-            System.out.println();        
+            System.out.println();
+            System.out.println();
         }
     }
 }
