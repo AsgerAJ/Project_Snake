@@ -1,9 +1,17 @@
+import java.util.ArrayList;
+
 /**
  * Snake
  */
 public class Snake {
 
-    public static void main(String[] args) {
-        
+
+
+    public Snake(int size){
+        int score = 0;
+    }
+
+    public boolean collision() {
+        return false;
     }
 }
