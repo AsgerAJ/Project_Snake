@@ -14,7 +14,7 @@ public class Main {
     }
 
     public static void primitivGrafix(boolean[][] visualGrid, Snake test) throws IndexOutOfBoundsException {
-        for (int k = 0; k < 3; k++) {
+        for (int k = 0; k < 10; k++) {
             System.out.println(test.getHead().toString());
             int counter = 1;
             for (int i = 0; i < visualGrid.length; i++) {
