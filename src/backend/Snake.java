@@ -27,27 +27,19 @@ public class Snake {
         // if not on egde
 
         // new head
-
         Point oldHead = this.body.get(0);
         Point newHead = oldHead;
         switch (direction) { // handles movement of snake.
             case LEFT: // left movement
                 if (newHead.getX() - 1 < 0) {
-                    //newHead.setX(this.gridSizeX - 1);
                     this.body.add(0, new Point(this.gridSizeX - 1, oldHead.getY()));
                 } else {
                     this.body.add(0, new Point(oldHead.getX() - 1, oldHead.getY()));
-                    //newHead.updatePoint(-1, 0);
                 }
                 break;
 
             case DOWN:
                 if (newHead.getY() + 1 > this.gridSizeY - 1) {
-                    /* 
-                    newHead.setY(0);
-                } else {
-                    newHead.updatePoint(0, 1);
-                    */
                     this.body.add(0, new Point(oldHead.getX(), 0));
                 } else {
                     this.body.add(0, new Point(oldHead.getX(), oldHead.getY() + 1));
@@ -56,11 +48,6 @@ public class Snake {
 
             case RIGHT: // right movement
                 if (newHead.getX() + 1 > this.gridSizeX - 1) {
-                    /*
-                    newHead.setX(0);
-                } else {
-                    newHead.updatePoint(1, 0);
-                    */
                     this.body.add(0, new Point(0, oldHead.getY()));
                 } else {
                     this.body.add(0, new Point(oldHead.getX() + 1, oldHead.getY()));
@@ -69,11 +56,6 @@ public class Snake {
 
             case UP:
                 if (newHead.getY() - 1 < 0) {
-                    /*
-                    newHead.setY(this.gridSizeY - 1);
-                } else {
-                    newHead.updatePoint(0, -1);
-                    */
                     this.body.add(0, new Point(oldHead.getX(), this.gridSizeY - 1));
                 } else {
                     this.body.add(0, new Point(oldHead.getX(), oldHead.getY() - 1));
