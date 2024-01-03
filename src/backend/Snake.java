@@ -5,11 +5,13 @@ public class Snake {
     private int score;
     private int xstart;
     private int ystart;
+    private int gridSizeX;
+    private int gridSizeY;
     private Direction direction;
     private ArrayList<Point> body = new ArrayList<Point>();
     private boolean alive;
     
-    public Snake(int xstart, int ystart){
+    public Snake(int xstart, int ystart, int gridSizeX, int gridSizeY){
         this.direction = Direction.LEFT;
         this.body.add(new Point(xstart, ystart)); // head
         this.body.add(new Point(xstart, ystart+1)); // tail

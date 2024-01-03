@@ -13,15 +13,16 @@ public class Grid {
         this.n = n;
         this.m = m;
 
-        this.snake = new Snake(n / 2, m / 2);
+        this.snake = new Snake(n / 2, m / 2, n, m);
 
-        boolean goodrand = false;
+        boolean legalspawn = false;
         Random rand = new Random();
-        while (!goodrand) {
+        while (!legalspawn) {
             Point rewardLocation = new Point(rand.nextInt(n), rand.nextInt(m));
             if (!(rewardLocation.equals(snake.getPoint(0)) && rewardLocation.equals(snake.getPoint(1)))) {
-                goodrand = true;
+                legalspawn = true;
             }
         }
+
     }
 }

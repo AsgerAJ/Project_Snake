@@ -6,7 +6,7 @@ public class Main {
         int n = 11;
         int m = 11;
         boolean[][] visualGrid = new boolean[n][m];
-        Snake test = new Snake(n/2, m/2);
+        Snake test = new Snake(n/2, m/2, n, m);
         primitivGrafix(visualGrid, test);
     }
 
