@@ -42,7 +42,9 @@ public class PlayBoard extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
 
-        for (int gen = 0; gen < 20; gen++) {
+        primaryStage.show();
+
+        for (int gen = 0; gen < 3; gen++) {
             snake1.update(Direction.LEFT);
 
             for (int i = 0; i < boardWidth; i++) {
@@ -61,7 +63,7 @@ public class PlayBoard extends Application {
                 root.getChildren().add(snakePart);
             }
 
-            primaryStage.show();
+            //primaryStage.show();
         }
     }
 }
