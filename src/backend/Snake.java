@@ -13,7 +13,7 @@ public class Snake {
     private boolean alive;
 
     public Snake(int xstart, int ystart, int gridSizeX, int gridSizeY) {
-        this.direction = Direction.LEFT;
+        this.direction = Direction.DOWN;
         this.body.add(new Point(xstart, ystart)); // head
         this.body.add(new Point(xstart, ystart + 1)); // tail
         this.gridSizeX = gridSizeX;
@@ -43,25 +43,40 @@ public class Snake {
 
             case DOWN:
                 if (newHead.getY() + 1 > this.gridSizeY - 1) {
+                    /* 
                     newHead.setY(0);
                 } else {
                     newHead.updatePoint(0, 1);
+                    */
+                    this.body.add(0, new Point(oldHead.getX(), 0));
+                } else {
+                    this.body.add(0, new Point(oldHead.getX(), oldHead.getY() + 1));
                 }
                 break;
 
             case RIGHT: // right movement
                 if (newHead.getX() + 1 > this.gridSizeX - 1) {
+                    /*
                     newHead.setX(0);
                 } else {
                     newHead.updatePoint(1, 0);
+                    */
+                    this.body.add(0, new Point(0, oldHead.getY()));
+                } else {
+                    this.body.add(0, new Point(oldHead.getX() + 1, oldHead.getY()));
                 }
                 break;
 
             case UP:
                 if (newHead.getY() - 1 < 0) {
+                    /*
                     newHead.setY(this.gridSizeY - 1);
                 } else {
                     newHead.updatePoint(0, -1);
+                    */
+                    this.body.add(0, new Point(oldHead.getX(), this.gridSizeY - 1));
+                } else {
+                    this.body.add(0, new Point(oldHead.getX(), oldHead.getY() - 1));
                 }
                 break;
 
@@ -73,7 +88,6 @@ public class Snake {
         if(!grow()) {
             this.body.remove(getLength() - 1);
         }
-        //this.body.remove(this.body.size() - 1);
     }
 
     public boolean collision() {
