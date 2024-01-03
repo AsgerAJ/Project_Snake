@@ -28,8 +28,9 @@ public class Point {
         this.y = y;
     }
 
-    public Point updatePoint(int dx, int dy) {
-        return new Point(x + dx, y + dy);
+    public void updatePoint(int dx, int dy) {
+        this.x = x+dx;
+        this.y = y+dy;
     }
 
     public boolean equals(Point other) {
