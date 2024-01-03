@@ -19,24 +19,16 @@ public class Main {
                 System.out.print(test.getPoint(lol).toString() + " ");
             }
             System.out.println();
-            //System.out.println(test.getHead().toString());
-            int counter = 1;
             for (int i = 0; i < visualGrid.length; i++) {
                 for (int j = 0; j < visualGrid[i].length; j++) {
-                    if ((test.getHead().getX() == j) && (test.getHead().getY() == i)) {
-                        System.out.print("Head" + " , ");
-                        if (counter != 1 && counter != test.getLength()) {
-                            counter++;
+                    String output = "false, ";
+                    for(int kolo = 0; kolo < test.getLength(); kolo++) {
+                        if (new Point(j, i).equals(test.getPoint(kolo))) {
+                            output = "CUNTS, ";
+                            break;
                         }
-                    } else if (new Point(j, i).equals(test.getPoint(counter))) {
-                        System.out.print("Body" + " , ");
-                        if (counter != 1 && counter != test.getLength()) {
-                            counter++;
-                        }
-                    } else {
-                        System.out.print(visualGrid[j][i] + ", ");
                     }
-
+                    System.out.print(output);
                 }
                 System.out.println();
                 System.out.println();

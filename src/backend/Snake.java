@@ -90,7 +90,7 @@ public class Snake {
     }
 
     public boolean grow() {
-        return true;
+        return false;
     }
 
     public Point getHead() {
