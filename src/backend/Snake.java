@@ -13,9 +13,11 @@ public class Snake {
     private boolean alive;
 
     public Snake(int xstart, int ystart, int gridSizeX, int gridSizeY) {
-        this.direction = Direction.UP;
+        this.direction = Direction.DOWN;
         this.body.add(new Point(xstart, ystart)); // head
         this.body.add(new Point(xstart, ystart + 1)); // tail
+        this.gridSizeX = gridSizeX;
+        this.gridSizeY = gridSizeY;
         this.alive = true;
         this.score = 0;
     }
@@ -37,23 +39,25 @@ public class Snake {
                 }
                 break;
 
-            case DOWN: // up movement
+            case DOWN:
                 if (newHead.getY() + 1 > this.gridSizeY) {
                     newHead.setY(0);
                 } else {
-                    newHead.updatePoint(1, 0);
+                    newHead.updatePoint(0, 1);
                 }
                 break;
 
             case RIGHT: // right movement
                 if (newHead.getX() + 1 > this.gridSizeX) {
+                    System.out.println("did");
+                    System.out.println(this.gridSizeX);
                     newHead.setX(0);
                 } else {
                     newHead.updatePoint(1, 0);
                 }
                 break;
 
-            case UP: // down movement
+            case UP:
                 if (newHead.getY() - 1 < 0) {
                     newHead.setY(this.gridSizeY - 1);
                 } else {
