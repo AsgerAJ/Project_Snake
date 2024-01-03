@@ -70,7 +70,9 @@ public class Snake {
         }
 
         // remove tail
-        this.body.remove(getLength() - 1);
+        if(!grow()) {
+            this.body.remove(getLength() - 1);
+        }
         //this.body.remove(this.body.size() - 1);
     }
 
@@ -87,8 +89,8 @@ public class Snake {
         return collision;
     }
 
-    public void grow() {
-
+    public boolean grow() {
+        return true;
     }
 
     public Point getHead() {
