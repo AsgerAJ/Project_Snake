@@ -1,9 +1,6 @@
 package src.backend;
 
-import java.util.*;
-
 public class Point {
-
     private int x;
     private int y;
 
@@ -34,11 +31,8 @@ public class Point {
     }
 
     public boolean equals(Point other) {
-        if (this.getX() == other.getX() && this.getY() == other.getY()) {
-            return true;
-        } else {
-            return false;
-        }
+        boolean output = (this.getX() == other.getX() && this.getY() == other.getY()) ? true : false;
+        return output;
     }
 
     @Override
