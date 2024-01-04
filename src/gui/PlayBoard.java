@@ -1,6 +1,10 @@
 package src.gui;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +17,7 @@ import javafx.stage.Stage;
 import src.backend.Direction;
 import src.backend.Snake;
 import src.gui.Main;
+import javafx.util.Duration;
 
 public class PlayBoard extends Application {
 
@@ -23,9 +28,29 @@ public class PlayBoard extends Application {
         Application.launch(args);
     }
 
+    public static void DrawSnake(Snake snake, Pane root, int tileSize){
+        for (int i = 0; i < snake.getLength(); i++) {
+                Rectangle snakePart = new Rectangle(10 + tileSize * snake.getPoint(i).getX(), 10 + tileSize * snake.getPoint(i).getY(), tileSize, tileSize);
+                snakePart.setFill(Color.rgb(255, 255, 255));
+                snakePart.setStroke(Color.rgb(0, 0, 0));
+                root.getChildren().add(snakePart);
+        }
+    }
+
+    public static void DrawBoard(Pane root, int boardWidth, int boardHeight, int tileSize) {
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
+                Rectangle tile = new Rectangle(10 + tileSize * i, 10 + tileSize * j, tileSize, tileSize);
+                tile.setFill(Color.rgb(200, 100, 50));
+                tile.setStroke(Color.rgb(0, 0, 0));
+                root.getChildren().add(tile);
+            }
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) {
-        int tileSize = 40;
+        int tileSize = 28;
         int boardHeight = 17;
         int boardWidth = 17;
 
@@ -36,34 +61,33 @@ public class PlayBoard extends Application {
 
         root.getChildren().add(canvas);
 
-        Scene scene = new Scene(root, width, height);
+        Scene scene = new Scene(root, 500, 500);
+
+        //snake1.update(Direction.LEFT);
+
+        DrawBoard(root, boardWidth, boardHeight, tileSize);
+        DrawSnake(snake1, root, tileSize);
+
+        /*
+        Runnable game = () -> {
+            try {
+                while (true) {
+                    snake1.update(Direction.LEFT);
+                    DrawSnake(snake1, root, tileSize);
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException ie) {}
+        };
+        */
 
         primaryStage.setTitle("Snake");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-
         primaryStage.show();
-
-        for (int gen = 0; gen < 3; gen++) {
-            snake1.update(Direction.LEFT);
-
-            for (int i = 0; i < boardWidth; i++) {
-                for (int j = 0; j < boardHeight; j++) {
-                    Rectangle tile = new Rectangle(10 + tileSize * i, 10 + tileSize * j, tileSize, tileSize);
-                    tile.setFill(Color.rgb(200, 100, 50));
-                    tile.setStroke(Color.rgb(0, 0, 0));
-                    root.getChildren().add(tile);
-                }
-            }
-
-            for (int i = 0; i < snake1.getLength(); i++) {
-                Rectangle snakePart = new Rectangle(10 + tileSize * snake1.getPoint(i).getX(), 10 + tileSize * snake1.getPoint(i).getY(), tileSize, tileSize);
-                snakePart.setFill(Color.rgb(255, 255, 255));
-                snakePart.setStroke(Color.rgb(0, 0, 0));
-                root.getChildren().add(snakePart);
-            }
-
-            //primaryStage.show();
-        }
+        /*
+        Thread gameThread = new Thread(game);
+        gameThread.setDaemon(true);
+        gameThread.start();
+        */
     }
 }
