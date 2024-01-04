@@ -8,9 +8,11 @@ public class Rewards {
     private Random random = new Random();
     private Point fruit;
 
+    public Rewards(Snake snake){
+        this.location = location;
+    }
 
-
-    public  Rewards(int x, int y, Snake snake) {
+    public Point newFruit(int x, int y, Snake snake) {
         boolean badSpawn = true;
         while (badSpawn) {
             Point fruit = new Point(random.nextInt(x), random.nextInt(y));
@@ -24,6 +26,6 @@ public class Rewards {
     }
 
     public Point getFruitPoint(){
-
+        return this.location;
     }
 }

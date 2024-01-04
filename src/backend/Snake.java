@@ -5,8 +5,6 @@ import java.util.*;
 public class Snake {
     
     private int score;
-    private int xstart;
-    private int ystart;
     private int gridSizeX;
     private int gridSizeY;
     private Direction direction;
@@ -74,7 +72,7 @@ public class Snake {
         }
     }
 
-    public boolean collision() {
+    public boolean selfCollision() {
         boolean collision = false;
         for (int i = 0; i < this.body.size(); i++) {
             if (this.body.get(0).equals(this.body.get(i))) {

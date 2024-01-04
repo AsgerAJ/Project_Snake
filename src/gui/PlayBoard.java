@@ -19,7 +19,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import src.backend.Direction;
 import src.backend.Snake;
-import src.gui.Main;
 import javafx.util.Duration;
 
 public class PlayBoard extends Application {
@@ -38,14 +37,13 @@ public class PlayBoard extends Application {
     }
 
     public static void DrawSnake(Snake snake, Pane root, int tileSize) {
-        root.getChildren().remove(boardHeight * boardWidth);
         for (int i = 0; i < snake.getLength() - 1; i++) {
             Rectangle snakePart = new Rectangle(10 + tileSize * snake.getPoint(i).getX(),
                     10 + tileSize * snake.getPoint(i).getY(), tileSize, tileSize);
             snakePart.setFill(Color.rgb(255, 255, 255));
-            snakePart.setStroke(Color.rgb(0, 0, 0));
             root.getChildren().add(snakePart);
         }
+        root.getChildren().remove(boardHeight * boardWidth);
     }
 
     public static void DrawBoard(Pane root, int boardWidth, int boardHeight, int tileSize) {
