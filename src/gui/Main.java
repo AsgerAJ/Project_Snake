@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import src.backend.Direction;
 import src.backend.Snake;
 
-public class PlayBoard extends Application {
+public class Main extends Application {
 
     int width = 800;
     int height = 800;

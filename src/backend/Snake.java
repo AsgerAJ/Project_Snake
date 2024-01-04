@@ -23,50 +23,31 @@ public class Snake {
     }
 
     public void update(Direction direction) { // google har 8 steps i sekundet
-        // if målfelt is clear
-        // if not on egde
-
-        // new head
         Point oldHead = this.body.get(0);
-        Point newHead = oldHead;
-        switch (direction) { // handles movement of snake.
-            case LEFT: // left movement
-                if (newHead.getX() - 1 < 0) {
-                    this.body.add(0, new Point(this.gridSizeX - 1, oldHead.getY()));
-                } else {
-                    this.body.add(0, new Point(oldHead.getX() - 1, oldHead.getY()));
-                }
+        switch (direction) {
+            case LEFT:
+                Point newPoint = (oldHead.getX() - 1 < 0) ? new Point(this.gridSizeX - 1, oldHead.getY()) : new Point(oldHead.getX() - 1, oldHead.getY());
+                this.body.add(0, newPoint);
                 break;
 
             case DOWN:
-                if (newHead.getY() + 1 > this.gridSizeY - 1) {
-                    this.body.add(0, new Point(oldHead.getX(), 0));
-                } else {
-                    this.body.add(0, new Point(oldHead.getX(), oldHead.getY() + 1));
-                }
+                newPoint = (oldHead.getY() + 1 > this.gridSizeY - 1) ? new Point(oldHead.getX(), 0) : new Point(oldHead.getX(), oldHead.getY() + 1);
+                this.body.add(0, newPoint);
                 break;
 
-            case RIGHT: // right movement
-                if (newHead.getX() + 1 > this.gridSizeX - 1) {
-                    this.body.add(0, new Point(0, oldHead.getY()));
-                } else {
-                    this.body.add(0, new Point(oldHead.getX() + 1, oldHead.getY()));
-                }
+            case RIGHT:
+                newPoint = (oldHead.getX() + 1 > this.gridSizeX - 1) ? new Point(0, oldHead.getY()) : new Point(oldHead.getX() + 1, oldHead.getY());
+                this.body.add(0, newPoint);
                 break;
 
             case UP:
-                if (newHead.getY() - 1 < 0) {
-                    this.body.add(0, new Point(oldHead.getX(), this.gridSizeY - 1));
-                } else {
-                    this.body.add(0, new Point(oldHead.getX(), oldHead.getY() - 1));
-                }
+                newPoint = (oldHead.getY() - 1 < 0) ? new Point(oldHead.getX(), this.gridSizeY - 1) : new Point(oldHead.getX(), oldHead.getY() - 1);
+                this.body.add(0, newPoint);
                 break;
 
             default:
                 break;
         }
-
-        // remove tail
         if(!grow()) {
             this.body.remove(getLength() - 1);
         }
@@ -84,12 +65,10 @@ public class Snake {
         }
         return collision;
     }
+
      public boolean eat(Point p){
-        if (p == body.get(0)){
-            return true;
-        } else {
-            return false;
-        }
+        boolean output = (p == body.get(0)) ? true : false;
+        return output;
     }
     
 
