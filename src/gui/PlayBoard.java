@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,6 +24,11 @@ public class PlayBoard extends Application {
 
     int width = 800;
     int height = 800;
+    public static int tileSize = 28;
+    public static int boardHeight = 17;
+    public static int boardWidth = 17;
+    public static Pane root = new Pane();
+    public static Snake snake1 = new Snake(Integer.valueOf(boardWidth / 2), Integer.valueOf(boardHeight / 2), boardWidth, boardHeight);
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -48,15 +54,17 @@ public class PlayBoard extends Application {
         }
     }
 
+    public static void run() {
+        Platform.runLater(() -> {
+            DrawBoard(root, boardWidth, boardHeight, tileSize);
+            snake1.update(Direction.DOWN);
+            DrawSnake(snake1, root, tileSize);
+        });
+    }
+
     @Override
     public void start(Stage primaryStage) {
-        int tileSize = 28;
-        int boardHeight = 17;
-        int boardWidth = 17;
-
-        Snake snake1 = new Snake(Integer.valueOf(boardWidth / 2), Integer.valueOf(boardHeight / 2), boardWidth, boardHeight);
-
-        Pane root = new Pane();
+        
         Canvas canvas = new Canvas(width, height);
 
         root.getChildren().add(canvas);
@@ -65,29 +73,28 @@ public class PlayBoard extends Application {
 
         //snake1.update(Direction.LEFT);
 
-        DrawBoard(root, boardWidth, boardHeight, tileSize);
-        DrawSnake(snake1, root, tileSize);
+        //DrawBoard(root, boardWidth, boardHeight, tileSize);
+        //DrawSnake(snake1, root, tileSize);
 
-        /*
+        
         Runnable game = () -> {
             try {
                 while (true) {
-                    snake1.update(Direction.LEFT);
-                    DrawSnake(snake1, root, tileSize);
+                    run();
                     Thread.sleep(100);
                 }
             } catch (InterruptedException ie) {}
         };
-        */
+
 
         primaryStage.setTitle("Snake");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
-        /*
+        
         Thread gameThread = new Thread(game);
         gameThread.setDaemon(true);
         gameThread.start();
-        */
+        
     }
 }
