@@ -30,17 +30,16 @@ public class PlayBoard extends Application {
     public static int boardWidth = 17;
     public static int tileSize = 28;
     public static Pane root = new Pane();
-    public static Snake snake1 = new Snake(Integer.valueOf(boardWidth / 2), Integer.valueOf(boardHeight / 2),
-            boardWidth, boardHeight);
+    public static Snake snake1 = new Snake(Integer.valueOf(boardWidth / 2), Integer.valueOf(boardHeight / 2), boardWidth, boardHeight);
 
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     public static void DrawSnake(Snake snake, Pane root, int tileSize) {
-        for (int i = 0; i < snake.getLength(); i++) {
-            Rectangle snakePart = new Rectangle(10 + tileSize * snake.getPoint(i).getX(),
-                    10 + tileSize * snake.getPoint(i).getY(), tileSize, tileSize);
+        root.getChildren().remove(boardHeight * boardWidth);
+        for (int i = 0; i < snake.getLength() - 1; i++) {
+            Rectangle snakePart = new Rectangle(10 + tileSize * snake.getPoint(i).getX(), 10 + tileSize * snake.getPoint(i).getY(), tileSize, tileSize);
             snakePart.setFill(Color.rgb(255, 255, 255));
             snakePart.setStroke(Color.rgb(0, 0, 0));
             root.getChildren().add(snakePart);
@@ -56,6 +55,10 @@ public class PlayBoard extends Application {
                 root.getChildren().add(tile);
             }
         }
+        Rectangle tile = new Rectangle(10 + tileSize * boardWidth, 10 + tileSize * boardHeight, tileSize, tileSize);
+        tile.setFill(Color.rgb(200, 100, 50));
+        tile.setStroke(Color.rgb(0, 0, 0));
+        root.getChildren().add(tile);
     }
 
     public static void run() {
