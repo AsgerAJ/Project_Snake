@@ -3,6 +3,7 @@ package src.backend;
 import java.util.*;
 
 public class Snake {
+    
     private int score;
     private int xstart;
     private int ystart;
@@ -11,6 +12,7 @@ public class Snake {
     private Direction direction;
     private ArrayList<Point> body = new ArrayList<Point>();
     private boolean alive;
+    
 
     public Snake(int xstart, int ystart, int gridSizeX, int gridSizeY) {
         this.direction = Direction.DOWN;
@@ -84,6 +86,14 @@ public class Snake {
         }
         return collision;
     }
+     public boolean eat(Point p){
+        if (p == body.get(0)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 
     public boolean grow() {
         return false;

@@ -30,7 +30,8 @@ public class PlayBoard extends Application {
     public static int boardWidth = 17;
     public static int tileSize = 28;
     public static Pane root = new Pane();
-    public static Snake snake1 = new Snake(Integer.valueOf(boardWidth / 2), Integer.valueOf(boardHeight / 2), boardWidth, boardHeight);
+    public static Snake snake1 = new Snake(Integer.valueOf(boardWidth / 2), Integer.valueOf(boardHeight / 2),
+            boardWidth, boardHeight);
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -39,7 +40,8 @@ public class PlayBoard extends Application {
     public static void DrawSnake(Snake snake, Pane root, int tileSize) {
         root.getChildren().remove(boardHeight * boardWidth);
         for (int i = 0; i < snake.getLength() - 1; i++) {
-            Rectangle snakePart = new Rectangle(10 + tileSize * snake.getPoint(i).getX(), 10 + tileSize * snake.getPoint(i).getY(), tileSize, tileSize);
+            Rectangle snakePart = new Rectangle(10 + tileSize * snake.getPoint(i).getX(),
+                    10 + tileSize * snake.getPoint(i).getY(), tileSize, tileSize);
             snakePart.setFill(Color.rgb(255, 255, 255));
             snakePart.setStroke(Color.rgb(0, 0, 0));
             root.getChildren().add(snakePart);
@@ -50,8 +52,12 @@ public class PlayBoard extends Application {
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < boardHeight; j++) {
                 Rectangle tile = new Rectangle(10 + tileSize * i, 10 + tileSize * j, tileSize, tileSize);
-                tile.setFill(Color.rgb(200, 100, 50));
-                tile.setStroke(Color.rgb(0, 0, 0));
+                if (i % 2 == 0 && j % 2 == 0 || ((i % 2 != 0) && (j % 2 != 0))) {
+                    tile.setFill(Color.rgb(136, 91, 242));
+                } else {
+                    tile.setFill(Color.rgb(109, 74, 191));
+                }
+
                 root.getChildren().add(tile);
             }
         }
@@ -79,7 +85,7 @@ public class PlayBoard extends Application {
                     run();
                     Thread.sleep(100);
                 }
-                
+
             } catch (InterruptedException ie) {
             }
         };
