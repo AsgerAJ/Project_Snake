@@ -26,7 +26,6 @@ public class GameRunner extends Application {
     public double width;
     public int n;
     public int m;
-    public Random rand;
 
     // Private variables
     private Pane root;
@@ -41,8 +40,8 @@ public class GameRunner extends Application {
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Welcome to the snake game");
 
-        n = 50;
-        m = 50;
+        n = 20;
+        m = 20;
 
         root = new Pane();
         root.setPrefSize(n, m);
@@ -50,7 +49,7 @@ public class GameRunner extends Application {
         drawGrid(n, m);
         food = new Food(2, 2, scalingConstant);
         drawFood(food);
-        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0);
+        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 7);
         drawSnake(snake);
 
         width = scalingConstant * n;
@@ -71,8 +70,8 @@ public class GameRunner extends Application {
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode code = event.getCode();
-            Direction last = snake.getDirr();
-            Direction last2 = last;
+            KeyCode last = code;
+            KeyCode last2 = last;
             switch (code) {
                 case UP:
                     if (snake.getDirr() != Direction.Down) {
@@ -146,6 +145,7 @@ public class GameRunner extends Application {
     }
 
     public void stepHandler(Snake snake) {
+        Random rand = new Random();
         Platform.runLater(() -> {
             if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
@@ -156,7 +156,10 @@ public class GameRunner extends Application {
                 // }
             }
             if(snake.foodCollision(food)){
-                root.getChildren().remove(food);
+
+                int randX = rand.nextInt(n+1);
+                int randY = rand.nextInt(m+1);
+                food.setXY(randX, randY);
                 eat();
             }
             snake.moveSnake(snake.getDirr());
@@ -173,7 +176,7 @@ public class GameRunner extends Application {
             public void handle(ActionEvent a) {
                 root.getChildren().clear();
                 drawGrid(n, m);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0);
+                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2);
                 drawSnake(snake);
             }
         };
@@ -181,9 +184,7 @@ public class GameRunner extends Application {
     }
 
     public void eat(){
-        root.getChildren().remove(food);
         snake.Grow();
         root.getChildren().add(snake.get(snake.getLength() - 1));
-
     }
 }

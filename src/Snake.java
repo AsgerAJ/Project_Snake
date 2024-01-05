@@ -11,13 +11,15 @@ public class Snake extends ArrayList<Rectangle> {
     private int score;
     private double sC;
 
-    public Snake(int x, int y, double sC, Direction direction, int score) {
+    public Snake(int x, int y, double sC, Direction direction, int score, int startLength) {
         this.x = x;
         this.y = y;
         this.sC = sC;
         this.score = score;
-        super.add(new Rectangle((x / 2) * sC, (y / 2) * sC, sC, sC));
-        super.get(0).setFill(Color.rgb(151, 234, 210));
+        for(int i = 0; i < startLength; i++){
+            super.add(new Rectangle((x / 2+i) * sC, (y / 2) * sC, sC, sC));
+            super.get(i).setFill(Color.rgb(151, 234, 210));
+        }
         this.direction = direction;
         //playerNumber++;
         // this.playerNumber = playerNumber;
@@ -37,7 +39,7 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
 
             case Down:
-                if (get(0).getY() + getSC() > getYlim() * getSC()) {
+                if (get(0).getY() + getSC() > getYlim() * getSC()- sC) {
                     get(size() - 1).setY(0);
                     get(size() - 1).setX(get(0).getX());
                 } else {
@@ -47,7 +49,7 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
 
             case Left:
-                if (get(0).getX() - getSC() < 0) {
+                if (get(0).getX() - getSC() < sC) {
                     get(size() - 1).setX(getXlim() * getSC() - getSC());
                     get(size() - 1).setY(get(0).getY());
                 } else {
@@ -57,7 +59,7 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
 
             case Right:
-                if (get(0).getX() + getSC() > getXlim() * getSC()) {
+                if (get(0).getX() + getSC() > getXlim() * getSC()-sC) {
                     get(size() - 1).setX(0);
                     get(size() - 1).setY(get(0).getY());
                 } else {
@@ -81,7 +83,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public boolean foodCollision(Rectangle food) {
-        if (food.intersects(get(0).getBoundsInLocal())) {
+        if (food.getX()==get(0).getX() && food.getY() == get(0).getY()) {
             return true;
         }
     return false;

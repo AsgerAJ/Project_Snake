@@ -23,4 +23,10 @@ public class Food extends Rectangle {
         return this.scalingConstant;
     }
 
+    public void setXY(int x, int y){
+        setX(x*scalingConstant-scalingConstant);
+        setY(y*scalingConstant-scalingConstant);
+        System.out.println(x + " : " + y);
+    }
+
 }
