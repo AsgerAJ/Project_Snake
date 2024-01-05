@@ -16,8 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-
-
 public class GameRunner extends Application {
 
     // Public variables
@@ -150,21 +148,21 @@ public class GameRunner extends Application {
             if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
                 // try {
-                //     gameOver();
+                // gameOver();
                 // } catch (FileNotFoundException e) {
-                //     e.printStackTrace();
+                // e.printStackTrace();
                 // }
             }
-            if(snake.foodCollision(food)){
+            if (snake.foodCollision(food)) {
                 boolean validSpawn = false;
                 int randX = 0;
                 int randY = 0;
                 while (!validSpawn) {
-                    randX = rand.nextInt(n)+1;
-                    randY = rand.nextInt(m)+1;
-                    for(int i = 0; i < snake.getLength(); i++) {
-                        if(snake.get(i).getX()/scalingConstant != randX
-                        && snake.get(i).getY()/scalingConstant != randY) {
+                    randX = rand.nextInt(n) + 1;
+                    randY = rand.nextInt(m) + 1;
+                    for (int i = 0; i < snake.getLength(); i++) {
+                        if (snake.get(i).getX() / scalingConstant != randX
+                                && snake.get(i).getY() / scalingConstant != randY) {
                             validSpawn = true;
                         }
                     }
@@ -175,13 +173,14 @@ public class GameRunner extends Application {
             snake.moveSnake(snake.getDirr());
         });
     }
-    public void gameOver() throws FileNotFoundException{
+
+    public void gameOver() throws FileNotFoundException {
         Image gameover = new Image(new FileInputStream("GameOverScreen.jpg"));
         ImageView imageView = new ImageView(gameover);
-        imageView.relocate(0,0);
+        imageView.relocate(0, 0);
         Button button = new Button("RESTART");
         button.relocate(width / 2, height / 2);
-        root.getChildren().addAll(imageView,button);
+        root.getChildren().addAll(imageView, button);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent a) {
                 root.getChildren().clear();
@@ -193,7 +192,7 @@ public class GameRunner extends Application {
         button.setOnAction(event);
     }
 
-    public void eat(){
+    public void eat() {
         snake.Grow();
         root.getChildren().add(snake.get(snake.getLength() - 1));
     }
