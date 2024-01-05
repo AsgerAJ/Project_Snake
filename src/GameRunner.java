@@ -1,23 +1,14 @@
 import java.util.Collections;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 
 public class GameRunner extends Application {
@@ -91,7 +82,8 @@ public class GameRunner extends Application {
                     break;
 
                 case SPACE:
-
+                    snake.Grow();
+                    root.getChildren().add(snake.get(snake.getLength()-1));
                     break;
                 default:
                     break;
@@ -111,9 +103,9 @@ public class GameRunner extends Application {
 
     public void drawGrid(int x, int y) { // Colours background
         if (x > y) {
-            scalingConstant = 800 / (x);
+            scalingConstant = 500 / (x);
         } else {
-            scalingConstant = 800 / (y);
+            scalingConstant = 500 / (y);
         }
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -135,6 +127,9 @@ public class GameRunner extends Application {
 
     public void stepHandler(Snake snake){
         Platform.runLater(() -> {
+            if(snake.selfCollide()){
+                snake.setCurrentDirection(Direction.Stop);
+            }
             snake.moveSnake(snake.getDirr());
         });
     }

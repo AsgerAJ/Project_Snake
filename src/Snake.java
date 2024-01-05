@@ -1,8 +1,3 @@
-
-/**
- * Snake
- */
-
 import javafx.scene.shape.*;
 import java.util.*;
 
@@ -19,10 +14,9 @@ public class Snake extends ArrayList<Rectangle> {
         this.y = y;
         this.sC = sC;
         super.add(new Rectangle((x / 2) * sC, (y / 2) * sC, sC, sC));
-        super.add(new Rectangle(((x / 2) + 1) * sC, (y / 2) * sC, sC, sC));
         this.direction = direction;
         playerNumber++;
-        this.playerNumber = playerNumber;
+        // this.playerNumber = playerNumber;
     }
 
     public void moveSnake(Direction newDirection) {
@@ -77,9 +71,28 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public void Grow() {
-        super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getX(), playerNumber,
-                modCount));
+        super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(),getSC()));
     }
+
+    public boolean eat() {
+        for (int i = 1; i < getLength() - 1; i++) {
+            if (get(0).intersects(get(i).getBoundsInLocal())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean selfCollide(){
+        boolean dead = false;
+        for (int i = 1; i < getLength()-1; i++){
+            if((get(i).getX() == get(0).getX()) && (get(i).getY() == get(0).getY()) ){
+                return dead = true;
+            }
+        }
+        return dead;
+    }
+
 
     public Direction getDirr() {
         return this.direction;
