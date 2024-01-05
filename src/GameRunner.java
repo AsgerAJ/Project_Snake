@@ -59,7 +59,7 @@ public class GameRunner extends Application {
                 while (true) {
                     stepHandler(snake);
                     Collections.rotate(snake, 1);
-                    Thread.sleep(80);
+                    Thread.sleep(100);
                 }
 
             } catch (InterruptedException ie) {
