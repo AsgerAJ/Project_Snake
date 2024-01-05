@@ -10,16 +10,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-
 public class GameRunner extends Application {
 
-
-    //Public variables
+    // Public variables
     public double scalingConstant;
 
-    //Private variables
+    // Private variables
     private Pane root;
-
+    private Food food;
+    private Snake snake;
 
     public static void main(String[] args) {
         launch(args);
@@ -36,16 +35,16 @@ public class GameRunner extends Application {
         root.setPrefSize(n, m);
 
         drawGrid(n, m);
-
-        Snake snake = new Snake(n, m, scalingConstant, Direction.Stop, 0);
+        food = new Food(2, 2, scalingConstant);
+        drawFood(food);
+        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0);
         drawSnake(snake);
 
         double width = scalingConstant * n;
         double height = scalingConstant * m;
         Scene scene = new Scene(root, width, height);
 
-
-        Runnable snakeStepper = () ->{
+        Runnable snakeStepper = () -> {
             try {
                 while (true) {
                     stepHandler(snake);
@@ -83,7 +82,7 @@ public class GameRunner extends Application {
 
                 case SPACE:
                     snake.Grow();
-                    root.getChildren().add(snake.get(snake.getLength()-1));
+                    root.getChildren().add(snake.get(snake.getLength() - 1));
                     break;
                 default:
                     break;
@@ -99,7 +98,6 @@ public class GameRunner extends Application {
         gameThread.setDaemon(true);
         gameThread.start();
     }
-
 
     public void drawGrid(int x, int y) { // Colours background
         if (x > y) {
@@ -121,16 +119,21 @@ public class GameRunner extends Application {
         }
     }
 
-    public void drawSnake(Snake snake){
+    public void drawSnake(Snake snake) {
         root.getChildren().addAll(snake);
     }
 
-    public void stepHandler(Snake snake){
+    public void drawFood(Food food) {
+        root.getChildren().add(food);
+    }
+
+    public void stepHandler(Snake snake) {
         Platform.runLater(() -> {
-            if(snake.selfCollide()){
+            if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
             }
             snake.moveSnake(snake.getDirr());
         });
     }
+
 }
