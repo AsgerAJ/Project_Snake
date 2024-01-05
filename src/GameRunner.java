@@ -156,9 +156,19 @@ public class GameRunner extends Application {
                 // }
             }
             if(snake.foodCollision(food)){
-
-                int randX = rand.nextInt(n)+1;
-                int randY = rand.nextInt(m)+1;
+                boolean validSpawn = false;
+                int randX = 0;
+                int randY = 0;
+                while (!validSpawn) {
+                    randX = rand.nextInt(n)+1;
+                    randY = rand.nextInt(m)+1;
+                    for(int i = 0; i < snake.getLength(); i++) {
+                        if(snake.get(i).getX()/scalingConstant != randX
+                        && snake.get(i).getY()/scalingConstant != randY) {
+                            validSpawn = true;
+                        }
+                    }
+                }
                 food.setXY(randX, randY);
                 eat();
             }
