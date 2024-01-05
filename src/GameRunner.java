@@ -49,7 +49,7 @@ public class GameRunner extends Application {
         drawGrid(n, m);
         food = new Food(2, 2, scalingConstant);
         drawFood(food);
-        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 7);
+        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2);
         drawSnake(snake);
 
         width = scalingConstant * n;
@@ -157,8 +157,8 @@ public class GameRunner extends Application {
             }
             if(snake.foodCollision(food)){
 
-                int randX = rand.nextInt(n+1);
-                int randY = rand.nextInt(m+1);
+                int randX = rand.nextInt(n)+1;
+                int randY = rand.nextInt(m)+1;
                 food.setXY(randX, randY);
                 eat();
             }

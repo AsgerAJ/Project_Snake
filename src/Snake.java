@@ -49,7 +49,7 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
 
             case Left:
-                if (get(0).getX() - getSC() < sC) {
+                if (get(0).getX() - getSC() < 0) {
                     get(size() - 1).setX(getXlim() * getSC() - getSC());
                     get(size() - 1).setY(get(0).getY());
                 } else {
