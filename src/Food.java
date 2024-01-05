@@ -6,6 +6,8 @@ public class Food extends Rectangle {
 
     private int x;
     private int y;
+    private double scalingConstant;
+
 
 
 
@@ -14,5 +16,11 @@ public class Food extends Rectangle {
         super.setArcHeight(scalingConstant);
         super.setArcWidth(scalingConstant);
         super.setFill(Color.RED);
+        this.scalingConstant = scalingConstant;
     }
+
+    public double getcS(){
+        return this.scalingConstant;
+    }
+
 }

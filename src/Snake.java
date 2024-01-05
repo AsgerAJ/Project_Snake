@@ -80,9 +80,8 @@ public class Snake extends ArrayList<Rectangle> {
         super.get(getLength()-1).setFill(Color.rgb(151, 234, 210));
     }
 
-    public boolean eat(Rectangle food) {
+    public boolean foodCollision(Rectangle food) {
         if (food.intersects(get(0).getBoundsInLocal())) {
-            Grow();
             return true;
         }
     return false;
