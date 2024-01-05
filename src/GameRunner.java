@@ -37,7 +37,7 @@ public class GameRunner extends Application {
 
         drawGrid(n, m);
 
-        Snake snake = new Snake(n, m, scalingConstant, Direction.Stop);
+        Snake snake = new Snake(n, m, scalingConstant, Direction.Stop, 0);
         drawSnake(snake);
 
         double width = scalingConstant * n;

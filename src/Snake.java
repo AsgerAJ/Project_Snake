@@ -7,15 +7,17 @@ public class Snake extends ArrayList<Rectangle> {
     public int playerNumber = 0;
     private int x;
     private int y;
+    private int score;
     private double sC;
 
-    public Snake(int x, int y, double sC, Direction direction) {
+    public Snake(int x, int y, double sC, Direction direction, int score) {
         this.x = x;
         this.y = y;
         this.sC = sC;
+        this.score = score;
         super.add(new Rectangle((x / 2) * sC, (y / 2) * sC, sC, sC));
         this.direction = direction;
-        playerNumber++;
+        //playerNumber++;
         // this.playerNumber = playerNumber;
     }
 
@@ -71,6 +73,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public void Grow() {
+        this.score++;
         super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(),getSC()));
     }
 
@@ -96,6 +99,10 @@ public class Snake extends ArrayList<Rectangle> {
 
     public Direction getDirr() {
         return this.direction;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     public void setCurrentDirection(Direction direction) {
