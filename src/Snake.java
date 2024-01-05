@@ -18,7 +18,7 @@ public class Snake extends ArrayList<Rectangle> {
         this.score = score;
         for(int i = 0; i < startLength; i++){
             super.add(new Rectangle((x / 2+i) * sC, (y / 2) * sC, sC, sC));
-            super.get(i).setFill(Color.rgb(151, 234, 210));
+            super.get(i).setFill(Color.rgb(189, 217, 191));
         }
         this.direction = direction;
         //playerNumber++;
@@ -79,7 +79,7 @@ public class Snake extends ArrayList<Rectangle> {
     public void Grow() {
         this.score++;
         super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(),getSC()));
-        super.get(getLength()-1).setFill(Color.rgb(151, 234, 210));
+        super.get(getLength()-1).setFill(Color.rgb(189, 217, 191));
     }
 
     public boolean foodCollision(Rectangle food) {
