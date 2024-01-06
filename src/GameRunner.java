@@ -29,6 +29,7 @@ public class GameRunner extends Application {
     private Pane root;
     private Food food;
     private Snake snake;
+    private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -72,23 +73,31 @@ public class GameRunner extends Application {
             KeyCode last2 = last;
             switch (code) {
                 case UP:
-                    if (snake.getDirr() != Direction.Down) {
+                    if (snake.getDirr() != Direction.Down
+                    && !directionWasChanged) {
                         snake.setCurrentDirection(Direction.Up);
+                        directionWasChanged = true;
                     }
                     break;
                 case DOWN:
-                    if (snake.getDirr() != Direction.Up) {
+                    if (snake.getDirr() != Direction.Up
+                    && !directionWasChanged) {
                         snake.setCurrentDirection(Direction.Down);
+                        directionWasChanged = true;
                     }
                     break;
                 case LEFT:
-                    if (snake.getDirr() != Direction.Right) {
+                    if (snake.getDirr() != Direction.Right
+                    && !directionWasChanged) {
                         snake.setCurrentDirection(Direction.Left);
+                        directionWasChanged = true;
                     }
                     break;
                 case RIGHT:
-                    if (snake.getDirr() != Direction.Left) {
+                    if (snake.getDirr() != Direction.Left
+                    && !directionWasChanged) {
                         snake.setCurrentDirection(Direction.Right);
+                        directionWasChanged = true;
                     }
                     break;
 
@@ -145,6 +154,7 @@ public class GameRunner extends Application {
     public void stepHandler(Snake snake) {
         Random rand = new Random();
         Platform.runLater(() -> {
+            directionWasChanged = false;
             if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
                 // try {
