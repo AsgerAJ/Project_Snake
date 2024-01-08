@@ -47,8 +47,9 @@ public class GameRunner extends Application {
         root = new Pane();
         root.setPrefSize(n, m);
 
+        Random foodCord = new Random();
         drawGrid(n, m);
-        food = new Food(2, 2, scalingConstant);
+        food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
         drawFood(food);
         snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
         drawSnake(snake);
