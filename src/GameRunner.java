@@ -84,28 +84,28 @@ public class GameRunner extends Application {
 
             switch (code) {
                 case UP:
-                    if (snake.getDirr() != Direction.Down
-                    && !snake.getDirectionWasChanged()) {
+                    if (snake.getAlive() && snake.getDirr() != Direction.Down
+                    && !snake.getDirectionWasChanged() ) {
                         snake.setCurrentDirection(Direction.Up);
                         snake.setDirectionWasChanged(true);
                     }
                     break;
                 case DOWN:
-                    if (snake.getDirr() != Direction.Up
+                    if (snake.getAlive() && snake.getDirr() != Direction.Up
                     && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Down);
                         snake.setDirectionWasChanged(true);
                     }
                     break;
                 case LEFT:
-                    if (snake.getDirr() != Direction.Right
+                    if (snake.getAlive() && snake.getDirr() != Direction.Right
                     && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Left);
                         snake.setDirectionWasChanged(true);
                     }
                     break;
                 case RIGHT:
-                    if (snake.getDirr() != Direction.Left
+                    if (snake.getAlive() && snake.getDirr() != Direction.Left
                     && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Right);
                         snake.setDirectionWasChanged(true);
@@ -114,7 +114,7 @@ public class GameRunner extends Application {
                 
                 case W:
                     if (multiplayer
-                    && !snake2.getDirectionWasChanged()
+                    && snake2.getAlive() && !snake2.getDirectionWasChanged()
                     && snake2.getDirr() != Direction.Down) {
                         snake2.setCurrentDirection(Direction.Up);
                         snake2.setDirectionWasChanged(true);
@@ -122,24 +122,24 @@ public class GameRunner extends Application {
                     break;
                 case S:
                     if (multiplayer
-                    && !snake2.getDirectionWasChanged()
-                    && snake2.getDirr() != Direction.Up) {
+                    && snake2.getAlive() && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Up && snake2.getAlive()) {
                         snake2.setCurrentDirection(Direction.Down);
                         snake2.setDirectionWasChanged(true);
                     }
                     break;
                 case A:
                     if (multiplayer
-                    && !snake2.getDirectionWasChanged()
-                    && snake2.getDirr() != Direction.Right) {
+                    && snake2.getAlive() && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Right && snake2.getAlive()) {
                         snake2.setCurrentDirection(Direction.Left);
                         snake2.setDirectionWasChanged(true);
                     }
                     break;
                 case D:
                     if (multiplayer
-                    && !snake2.getDirectionWasChanged()
-                    && snake2.getDirr() != Direction.Left) {
+                    && snake2.getAlive() && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Left && snake2.getAlive()) {
                         snake2.setCurrentDirection(Direction.Right);
                         snake2.setDirectionWasChanged(true);
                     }
@@ -205,6 +205,7 @@ public class GameRunner extends Application {
             Collections.rotate(snake, 1);
             if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
+                snake.murder();
                 // try {
                 // gameOver();
                 // } catch (FileNotFoundException e) {
