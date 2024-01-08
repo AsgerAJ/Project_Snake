@@ -115,7 +115,6 @@ public class Snake extends ArrayList<Rectangle> {
         return dead;
     }
 
-
     public Direction getDirr() {
         return this.direction;
     }

@@ -24,7 +24,7 @@ public class GameRunner extends Application {
     public double width;
     public int n;
     public int m;
-    public boolean multiplayer = false;
+    public boolean multiplayer = true;
 
     // Private variables
     private Pane root;
