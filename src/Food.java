@@ -26,7 +26,7 @@ public class Food extends Rectangle {
     public void setXY(int x, int y){
         setX(x*scalingConstant-scalingConstant);
         setY(y*scalingConstant-scalingConstant);
-        System.out.println(x + " : " + y);
+        //System.out.println(x + " : " + y);
     }
 
 }
