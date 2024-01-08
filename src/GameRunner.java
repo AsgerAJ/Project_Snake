@@ -24,6 +24,7 @@ public class GameRunner extends Application {
     public double width;
     public int n;
     public int m;
+    public boolean multiplayer = false;
 
     // Private variables
     private Pane root;
@@ -50,8 +51,11 @@ public class GameRunner extends Application {
         food = new Food(2, 2, scalingConstant);
         drawFood(food);
         snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-        //snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2);
         drawSnake(snake);
+        if(multiplayer) {
+            snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
+            drawSnake(snake2);
+        }
 
         width = scalingConstant * n;
         height = scalingConstant * m;
@@ -61,6 +65,9 @@ public class GameRunner extends Application {
             try {
                 while (true) {
                     stepHandler(snake);
+                    if(multiplayer) {
+                        stepHandler(snake2);
+                    }
                     Thread.sleep(100);
                 }
 
@@ -71,6 +78,9 @@ public class GameRunner extends Application {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode code = event.getCode();
             snake.setTailCoords();
+            if(multiplayer) {
+                snake2.setTailCoords();
+            }
 
             switch (code) {
                 case UP:
@@ -101,6 +111,39 @@ public class GameRunner extends Application {
                         snake.setDirectionWasChanged(true);
                     }
                     break;
+                
+                case W:
+                    if (multiplayer
+                    && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Down) {
+                        snake2.setCurrentDirection(Direction.Up);
+                        snake2.setDirectionWasChanged(true);
+                    }
+                    break;
+                case S:
+                    if (multiplayer
+                    && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Up) {
+                        snake2.setCurrentDirection(Direction.Down);
+                        snake2.setDirectionWasChanged(true);
+                    }
+                    break;
+                case A:
+                    if (multiplayer
+                    && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Right) {
+                        snake2.setCurrentDirection(Direction.Left);
+                        snake2.setDirectionWasChanged(true);
+                    }
+                    break;
+                case D:
+                    if (multiplayer
+                    && !snake2.getDirectionWasChanged()
+                    && snake2.getDirr() != Direction.Left) {
+                        snake2.setCurrentDirection(Direction.Right);
+                        snake2.setDirectionWasChanged(true);
+                    }
+                    break;
 
                 case SPACE:
                     snake.Grow();
@@ -109,6 +152,9 @@ public class GameRunner extends Application {
 
                 case G:
                     snake.setCurrentDirection(Direction.Stop);
+                    if(multiplayer) {
+                        snake2.setCurrentDirection(Direction.Stop);
+                    }
                 default:
                     break;
             }
@@ -132,8 +178,7 @@ public class GameRunner extends Application {
         }
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
-                        scalingConstant);
+                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant, scalingConstant);
                 if (((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) {
                     back.setFill(Color.rgb(136, 91, 242));
                 } else {
@@ -182,7 +227,7 @@ public class GameRunner extends Application {
                     }
                 }
                 food.setXY(randX + 1, randY + 1);
-                eat();
+                eat(snake);
                 root.getChildren().add(snake.get(snake.getLength() - 1));
             }
         });
@@ -206,7 +251,7 @@ public class GameRunner extends Application {
         button.setOnAction(event);
     }
 
-    public void eat() {
+    public void eat(Snake snake) {
         snake.Grow();
     }
 }
