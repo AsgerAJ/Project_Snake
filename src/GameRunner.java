@@ -29,7 +29,7 @@ public class GameRunner extends Application {
     private Pane root;
     private Food food;
     private Snake snake;
-    private boolean directionWasChanged = false;
+    //private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -74,30 +74,30 @@ public class GameRunner extends Application {
             switch (code) {
                 case UP:
                     if (snake.getDirr() != Direction.Down
-                    && !directionWasChanged) {
+                    && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Up);
-                        directionWasChanged = true;
+                        snake.setDirectionWasChanged(true);
                     }
                     break;
                 case DOWN:
                     if (snake.getDirr() != Direction.Up
-                    && !directionWasChanged) {
+                    && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Down);
-                        directionWasChanged = true;
+                        snake.setDirectionWasChanged(true);
                     }
                     break;
                 case LEFT:
                     if (snake.getDirr() != Direction.Right
-                    && !directionWasChanged) {
+                    && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Left);
-                        directionWasChanged = true;
+                        snake.setDirectionWasChanged(true);
                     }
                     break;
                 case RIGHT:
                     if (snake.getDirr() != Direction.Left
-                    && !directionWasChanged) {
+                    && !snake.getDirectionWasChanged()) {
                         snake.setCurrentDirection(Direction.Right);
-                        directionWasChanged = true;
+                        snake.setDirectionWasChanged(true);
                     }
                     break;
 
@@ -154,7 +154,7 @@ public class GameRunner extends Application {
     public void stepHandler(Snake snake) {
         Random rand = new Random();
         Platform.runLater(() -> {
-            directionWasChanged = false;
+            snake.setDirectionWasChanged(false);
             if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
                 // try {

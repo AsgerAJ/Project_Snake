@@ -10,6 +10,7 @@ public class Snake extends ArrayList<Rectangle> {
     private int y;
     private int score;
     private double sC;
+    private boolean directionWasChanged = false;
 
     public Snake(int x, int y, double sC, Direction direction, int score, int startLength) {
         this.x = x;
@@ -132,4 +133,11 @@ public class Snake extends ArrayList<Rectangle> {
         return super.size();
     }
 
+    public void setDirectionWasChanged(boolean input) {
+        this.directionWasChanged = input;
+    }
+
+    public boolean getDirectionWasChanged() {
+        return this.directionWasChanged;
+    }
 }
