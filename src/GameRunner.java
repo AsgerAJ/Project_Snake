@@ -29,6 +29,7 @@ public class GameRunner extends Application {
     private Pane root;
     private Food food;
     private Snake snake;
+    private Snake snake2;
     //private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
@@ -48,7 +49,8 @@ public class GameRunner extends Application {
         drawGrid(n, m);
         food = new Food(2, 2, scalingConstant);
         drawFood(food);
-        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2);
+        snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+        //snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2);
         drawSnake(snake);
 
         width = scalingConstant * n;
@@ -197,7 +199,7 @@ public class GameRunner extends Application {
             public void handle(ActionEvent a) {
                 root.getChildren().clear();
                 drawGrid(n, m);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2);
+                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
             }
         };

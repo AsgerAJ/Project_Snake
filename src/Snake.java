@@ -5,20 +5,21 @@ import java.util.*;
 public class Snake extends ArrayList<Rectangle> {
 
     private Direction direction;
-    public int playerNumber = 0;
+    public int playerNumber;
     private int x;
     private int y;
     private int score;
     private double sC;
     private boolean directionWasChanged = false;
 
-    public Snake(int x, int y, double sC, Direction direction, int score, int startLength) {
+    public Snake(int x, int y, double sC, Direction direction, int score, int startLength, int playerNumber) {
         this.x = x;
         this.y = y;
         this.sC = sC;
         this.score = score;
+        this.playerNumber = playerNumber;
         for(int i = 0; i < startLength; i++){
-            super.add(new Rectangle((x / 2+i) * sC, (y / 2) * sC, sC, sC));
+            super.add(new Rectangle((x / 2+i) * sC, ((y + 2*playerNumber) / 2) * sC, sC, sC));
             super.get(i).setFill(Color.rgb(189, 217, 191));
         }
         this.direction = direction;
