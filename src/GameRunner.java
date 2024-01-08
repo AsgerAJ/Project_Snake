@@ -61,7 +61,6 @@ public class GameRunner extends Application {
             try {
                 while (true) {
                     stepHandler(snake);
-                    Collections.rotate(snake, 1);
                     Thread.sleep(100);
                 }
 
@@ -71,8 +70,8 @@ public class GameRunner extends Application {
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode code = event.getCode();
-            KeyCode last = code;
-            KeyCode last2 = last;
+            snake.setTailCoords();
+
             switch (code) {
                 case UP:
                     if (snake.getDirr() != Direction.Down
@@ -157,6 +156,8 @@ public class GameRunner extends Application {
         Random rand = new Random();
         Platform.runLater(() -> {
             snake.setDirectionWasChanged(false);
+            snake.moveSnake(snake.getDirr());
+            Collections.rotate(snake, 1);
             if (snake.selfCollide()) {
                 snake.setCurrentDirection(Direction.Stop);
                 // try {
@@ -164,8 +165,7 @@ public class GameRunner extends Application {
                 // } catch (FileNotFoundException e) {
                 // e.printStackTrace();
                 // }
-            }
-            if (snake.foodCollision(food)) {
+            }else if (snake.foodCollision(food)) {
                 boolean validSpawn = false;
                 int randX = rand.nextInt(n);
                 int randY = rand.nextInt(m);
@@ -183,8 +183,8 @@ public class GameRunner extends Application {
                 }
                 food.setXY(randX + 1, randY + 1);
                 eat();
+                root.getChildren().add(snake.get(snake.getLength() - 1));
             }
-            snake.moveSnake(snake.getDirr());
         });
     }
 
@@ -208,6 +208,5 @@ public class GameRunner extends Application {
 
     public void eat() {
         snake.Grow();
-        root.getChildren().add(snake.get(snake.getLength() - 1));
     }
 }
