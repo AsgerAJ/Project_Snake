@@ -50,6 +50,8 @@ public class GameRunner extends Application {
 
         root = new Pane();
         root.setPrefSize(n, m);
+        Random foodCord = new Random();
+
         drawGrid(n, m);
         // startScreen();
 
