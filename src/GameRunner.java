@@ -174,6 +174,7 @@ public class GameRunner extends Application {
                     for (int i = 0; i < snake.getLength(); i++) {
                         if (snake.get(i).getX() / scalingConstant == randX
                         && snake.get(i).getY() / scalingConstant == randY) {
+                            validSpawn = false;
                             continue;
                         }
                     }
