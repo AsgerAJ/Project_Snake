@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -36,6 +37,10 @@ public class GameRunner extends Application {
     private Food food;
     private Snake snake;
     private Snake snake2;
+    private Font headFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 70);
+    private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
+    private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 19);
+
     // private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
@@ -49,12 +54,18 @@ public class GameRunner extends Application {
         n = 20;
         m = 20;
 
+        if (n > m) {
+            scalingConstant = 600 / (n);
+        } else {
+            scalingConstant = 600 / (m);
+        }
+
         root = new Pane();
         root.setPrefSize(n, m);
         Random foodCord = new Random();
 
-        width = 500;
-        height = 500;
+        width = 600;
+        height = 600;
 
         drawGrid(n, m);
         startScreen();
@@ -186,11 +197,6 @@ public class GameRunner extends Application {
     }
 
     public void drawGrid(int x, int y) { // Colours background
-        if (x > y) {
-            scalingConstant = 500 / (x);
-        } else {
-            scalingConstant = 500 / (y);
-        }
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
                 Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
@@ -215,50 +221,52 @@ public class GameRunner extends Application {
 
     public void stepHandler(Snake snake) {
         Random rand = new Random();
-        Platform.runLater(() -> {
-            snake.setDirectionWasChanged(false);
-            snake.moveSnake(snake.getDirr());
-            Collections.rotate(snake, 1);
-            if (snake.selfCollide()) {
-                snake.setCurrentDirection(Direction.Stop);
-                snake.murder();
-                try {
-                    gameOver();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else if (snake.foodCollision(food)) {
-                boolean validSpawn = false;
-                int randX = rand.nextInt(n);
-                int randY = rand.nextInt(m);
-                while (!validSpawn) {
-                    validSpawn = true;
-                    randX = rand.nextInt(n);
-                    randY = rand.nextInt(m);
-                    for (int i = 0; i < snake.getLength(); i++) {
-                        if (snake.get(i).getX() / scalingConstant == randX
-                                && snake.get(i).getY() / scalingConstant == randY) {
-                            validSpawn = false;
-                            continue;
+        if (startGame) {
+            Platform.runLater(() -> {
+                snake.setDirectionWasChanged(false);
+                snake.moveSnake(snake.getDirr());
+                Collections.rotate(snake, 1);
+                if (snake.selfCollide()) {
+                    snake.setCurrentDirection(Direction.Stop);
+                    snake.murder();
+                    try {
+                        gameOver();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if (snake.foodCollision(food)) {
+                    boolean validSpawn = false;
+                    int randX = rand.nextInt(n);
+                    int randY = rand.nextInt(m);
+                    while (!validSpawn) {
+                        validSpawn = true;
+                        randX = rand.nextInt(n);
+                        randY = rand.nextInt(m);
+                        for (int i = 0; i < snake.getLength(); i++) {
+                            if (snake.get(i).getX() / scalingConstant == randX
+                                    && snake.get(i).getY() / scalingConstant == randY) {
+                                validSpawn = false;
+                                continue;
+                            }
                         }
                     }
+                    food.setXY(randX + 1, randY + 1);
+                    eat(snake);
+                    root.getChildren().add(snake.get(snake.getLength() - 1));
                 }
-                food.setXY(randX + 1, randY + 1);
-                eat(snake);
-                root.getChildren().add(snake.get(snake.getLength() - 1));
-            }
-        });
+            });
+        }
     }
 
     public void gameOver() throws FileNotFoundException {
         Rectangle blackscreen = new Rectangle(0, 0, width, height);
         Label gameOver = new Label("GAME OVER");
-        gameOver.setFont(new Font("Modak", 70));
+        gameOver.setFont(headFont);
         gameOver.setTextFill(Color.rgb(255, 200, 87));
-        gameOver.relocate((width / 3.5), (height * 0.2));
+        gameOver.relocate((width/2), (scalingConstant*1));
         Button restart = new Button("RESTART");
-        restart.setFont(new Font("Modak", 20));
-        restart.relocate(width / 4, height / 2);
+        restart.setFont(detailFont);
+        restart.relocate(scalingConstant*5, scalingConstant*10);
         root.getChildren().addAll(blackscreen, restart, gameOver);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent a) {
@@ -267,6 +275,10 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
+                if (multiplayer) {
+                    snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
+                    drawSnake(snake2);
+                }
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
             }
@@ -275,38 +287,41 @@ public class GameRunner extends Application {
     }
 
     public void startScreen() {
+        // Title
         Label title = new Label("SNAKE");
-        title.setFont(new Font("Modak", 70));
+        title.setFont(headFont);
         title.setTextFill(Color.rgb(255, 200, 87));
-        title.relocate((width / 3.5), (height / 6));
-        Button startG = new Button("START");
-        startG.setFont(new Font("Modak", 20));
-        startG.relocate((width / 2.45), (height * 0.8));
+        title.relocate((140), (height / 6));
+
+        // multiplayer choice
         CheckBox multi = new CheckBox("Multiplayer");
-        multi.setFont(new Font("Modak", 19));
-        multi.relocate((scalingConstant*3), (scalingConstant*8-(scalingConstant*0.2)));
+        multi.setFont(checkFont);
+        multi.relocate((scalingConstant * 3), (scalingConstant * 8 - (scalingConstant * 0.2)));
         multi.setTextFill(Color.rgb(255, 200, 87));
-        TextField nSize = new TextField();
-        nSize.setPrefWidth(scalingConstant);
-        nSize.setPrefHeight(scalingConstant*0.75);
-        nSize.setFont(new Font("Britannic", 15));
-        TextField mSize = new TextField();
-        mSize.setPrefWidth(scalingConstant);
-        mSize.setPrefHeight(scalingConstant*0.75);
-        mSize.setFont(new Font("Britannic", 15));
-        nSize.relocate((3*scalingConstant), (12*scalingConstant));
-        mSize.relocate((5*scalingConstant), (12*scalingConstant));
-        Label nXm = new Label("X");
-        nXm.setFont(new Font("Britannic", 20));
-        nXm.setTextFill(Color.rgb(255, 200, 87));
-        nXm.relocate((4*scalingConstant+(0.23*scalingConstant)), (12*scalingConstant));
-        root.getChildren().addAll(startG, title, multi,nSize,mSize, nXm);
 
+        // boardsize buttons:
+        Button small = new Button("Small");
+        small.setFont(detailFont);
+        small.relocate((110), (400));
 
-        EventHandler<ActionEvent> klik = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent a) {
-                root.getChildren().removeAll(startG, title);
+        Button medium = new Button("Medium");
+        medium.setFont(detailFont);
+        medium.relocate((200), (400));
+
+        Button large = new Button("Large");
+        large.setFont(detailFont);
+        large.relocate((310), (400));
+
+        root.getChildren().addAll(title, multi, small, medium, large);
+
+        EventHandler<ActionEvent> sizeSelectSmall = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent size) {
+                root.getChildren().clear();
                 Random foodCord = new Random();
+                n = 15;
+                m = 15;
+                scalingConstant = 40;
+                drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
@@ -315,9 +330,53 @@ public class GameRunner extends Application {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
                 }
+                startGame = true;
+                // multiplayer = multi.BooleanProperty().isSelected();
             }
         };
-        startG.setOnAction(klik);
+        small.setOnAction(sizeSelectSmall);
+        EventHandler<ActionEvent> sizeSelectMedium = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent size) {
+                root.getChildren().clear();
+                Random foodCord = new Random();
+                n = 30;
+                m = 30;
+                scalingConstant = 20;
+                drawGrid(n, m);
+                food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
+                drawFood(food);
+                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake);
+                if (multiplayer) {
+                    snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
+                    drawSnake(snake2);
+                }
+                startGame = true;
+                // multiplayer = multi.BooleanProperty().isSelected();
+            }
+        };
+        medium.setOnAction(sizeSelectMedium);
+        EventHandler<ActionEvent> sizeSelectLarge = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent size) {
+                root.getChildren().clear();
+                Random foodCord = new Random();
+                n = 60;
+                m = 60;
+                scalingConstant = 10;
+                drawGrid(n, m);
+                food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
+                drawFood(food);
+                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake);
+                if (multiplayer) {
+                    snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
+                    drawSnake(snake2);
+                }
+                startGame = true;
+                // multiplayer = multi.BooleanProperty().isSelected();
+            }
+        };
+        large.setOnAction(sizeSelectLarge);
     }
 
     public void eat(Snake snake) {
