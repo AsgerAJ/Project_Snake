@@ -88,7 +88,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public void Grow() {
-        this.score++;
+        scoreIncrease();
         super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(),getSC()));
         if(this.playerNumber == 0) {
             super.get(getLength()-1).setFill(Color.rgb(189, 217, 191));
@@ -117,6 +117,10 @@ public class Snake extends ArrayList<Rectangle> {
 
     public Direction getDirr() {
         return this.direction;
+    }
+
+    public void scoreIncrease() {
+        this.score = score +1;
     }
 
     public int getScore() {
