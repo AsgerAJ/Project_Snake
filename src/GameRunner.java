@@ -29,13 +29,13 @@ public class GameRunner extends Application {
     public double width;
     public int n;
     public int m;
-    public boolean multiplayer = false;
+    public boolean multiplayer = true;
     public boolean startGame = false;
 
     // Private variables
     private Pane root;
     private Food food;
-    private Snake snake;
+    private Snake snake1;
     private Snake snake2;
     private Font headFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 70);
     private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
@@ -73,8 +73,8 @@ public class GameRunner extends Application {
         if (startGame) {
             food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
             drawFood(food);
-            snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-            drawSnake(snake);
+            snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+            drawSnake(snake1);
             if (multiplayer) {
                 snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                 drawSnake(snake2);
@@ -89,7 +89,7 @@ public class GameRunner extends Application {
         Runnable snakeStepper = () -> {
             try {
                 while (true) {
-                    stepHandler(snake);
+                    stepHandler(snake1);
                     if (multiplayer) {
                         stepHandler(snake2);
                     }
@@ -102,38 +102,38 @@ public class GameRunner extends Application {
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode code = event.getCode();
-            snake.setTailCoords();
+            snake1.setTailCoords();
             if (multiplayer) {
                 snake2.setTailCoords();
             }
 
             switch (code) {
                 case UP:
-                    if (snake.getAlive() && snake.getDirr() != Direction.Down
-                            && !snake.getDirectionWasChanged()) {
-                        snake.setCurrentDirection(Direction.Up);
-                        snake.setDirectionWasChanged(true);
+                    if (snake1.getAlive() && snake1.getDirr() != Direction.Down
+                            && !snake1.getDirectionWasChanged()) {
+                        snake1.setCurrentDirection(Direction.Up);
+                        snake1.setDirectionWasChanged(true);
                     }
                     break;
                 case DOWN:
-                    if (snake.getAlive() && snake.getDirr() != Direction.Up
-                            && !snake.getDirectionWasChanged()) {
-                        snake.setCurrentDirection(Direction.Down);
-                        snake.setDirectionWasChanged(true);
+                    if (snake1.getAlive() && snake1.getDirr() != Direction.Up
+                            && !snake1.getDirectionWasChanged()) {
+                        snake1.setCurrentDirection(Direction.Down);
+                        snake1.setDirectionWasChanged(true);
                     }
                     break;
                 case LEFT:
-                    if (snake.getAlive() && snake.getDirr() != Direction.Right
-                            && !snake.getDirectionWasChanged()) {
-                        snake.setCurrentDirection(Direction.Left);
-                        snake.setDirectionWasChanged(true);
+                    if (snake1.getAlive() && snake1.getDirr() != Direction.Right
+                            && !snake1.getDirectionWasChanged()) {
+                        snake1.setCurrentDirection(Direction.Left);
+                        snake1.setDirectionWasChanged(true);
                     }
                     break;
                 case RIGHT:
-                    if (snake.getAlive() && snake.getDirr() != Direction.Left
-                            && !snake.getDirectionWasChanged()) {
-                        snake.setCurrentDirection(Direction.Right);
-                        snake.setDirectionWasChanged(true);
+                    if (snake1.getAlive() && snake1.getDirr() != Direction.Left
+                            && !snake1.getDirectionWasChanged()) {
+                        snake1.setCurrentDirection(Direction.Right);
+                        snake1.setDirectionWasChanged(true);
                     }
                     break;
 
@@ -171,12 +171,12 @@ public class GameRunner extends Application {
                     break;
 
                 case SPACE:
-                    snake.Grow();
-                    root.getChildren().add(snake.get(snake.getLength() - 1));
+                    snake1.Grow();
+                    root.getChildren().add(snake1.get(snake1.getLength() - 1));
                     break;
 
                 case G:
-                    snake.setCurrentDirection(Direction.Stop);
+                    snake1.setCurrentDirection(Direction.Stop);
                     if (multiplayer) {
                         snake2.setCurrentDirection(Direction.Stop);
                     }
@@ -273,8 +273,8 @@ public class GameRunner extends Application {
                 Random foodCord = new Random();
                 root.getChildren().clear();
                 drawGrid(n, m);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -324,8 +324,8 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -345,8 +345,8 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -366,8 +366,8 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
