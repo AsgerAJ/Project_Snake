@@ -325,9 +325,9 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
-                displayScore(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
+                displayScore(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -347,8 +347,8 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -368,8 +368,8 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -390,7 +390,7 @@ public class GameRunner extends Application {
         root.getChildren().add(score);
     }
 
-    public void updateScore(){
+    public void updateScore(Snake snake){
         root.getChildren().remove(score);
         score.setText("" + snake.getScore());
         root.getChildren().add(score);
@@ -398,7 +398,7 @@ public class GameRunner extends Application {
 
     public void eat(Snake snake) {
         snake.Grow();
-        updateScore();
+        updateScore(snake);
     }
 
 }
