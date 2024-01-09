@@ -1,9 +1,9 @@
 import java.util.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.*;
+
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -12,14 +12,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 public class GameRunner extends Application {
 
@@ -31,6 +30,7 @@ public class GameRunner extends Application {
     public int m;
     public boolean multiplayer = false;
     public boolean startGame = false;
+    public boolean scoreSet = false;
 
     // Private variables
     private Pane root;
@@ -38,10 +38,14 @@ public class GameRunner extends Application {
     private Snake snake1;
     private Snake snake2;
     private Label score;
+    private TextField initials;
     private Font headFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 70);
     private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 30);
     private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 24);
-
+    private Font scoreFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
+    private Font miniFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 12);
+    private String scoreboard = "assets/scoreboard.txt";
+    private String initialsString = "";
     // private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
@@ -51,7 +55,12 @@ public class GameRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Welcome to the snake game");
-
+        try {
+            sortFile(scoreboard);
+            System.out.println("File sorted successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         n = 20;
         m = 20;
 
@@ -70,18 +79,6 @@ public class GameRunner extends Application {
 
         drawGrid(n, m);
         startScreen();
-
-        if (startGame) {
-            food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
-            drawFood(food);
-            snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-            drawSnake(snake1);
-            if (multiplayer) {
-                snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
-                drawSnake(snake2);
-            }
-
-        }
 
         width = scalingConstant * n;
         height = scalingConstant * m;
@@ -259,6 +256,7 @@ public class GameRunner extends Application {
     }
 
     public void gameOver() throws FileNotFoundException {
+
         Rectangle blackscreen = new Rectangle(0, 0, width, height);
         Label gameOver = new Label("GAME OVER");
         gameOver.setFont(headFont);
@@ -268,7 +266,36 @@ public class GameRunner extends Application {
         restart.setFont(detailFont);
         restart.relocate(width / 3 + 15, height * 7 / 10);
         blackscreen.setOpacity(0.25);
+
+        Button addScore = new Button("Add score to scoreboard");
+        addScore.setFont(scoreFont);
+        addScore.relocate((width / 4) + 20, (height * 7 / 10) - 50);
+
         root.getChildren().addAll(blackscreen, restart, gameOver);
+        if (!scoreSet) {
+            root.getChildren().add(addScore);
+        }
+        EventHandler<ActionEvent> addScoreEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                if (!multiplayer && !scoreSet) {
+                    String filestring = "" + snake1.getScore();
+                    for (int resultString = filestring.length(); resultString < 5; resultString++) {
+                        filestring = "0" + filestring;
+                    }
+                    filestring += " " + initialsString;
+                    try {
+                        writeSingleLine(scoreboard, filestring);
+                        System.out.println("Line written successfully!");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                root.getChildren().remove(addScore);
+                scoreSet = true;
+            }
+        };
+        addScore.setOnAction(addScoreEvent);
+
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent a) {
                 Random foodCord = new Random();
@@ -287,7 +314,7 @@ public class GameRunner extends Application {
         restart.setOnAction(event);
     }
 
-    public void startScreen() {
+    public void startScreen() throws FileNotFoundException{
         // Title
         Label title = new Label("SNAKE");
         title.setFont(headFont);
@@ -303,17 +330,85 @@ public class GameRunner extends Application {
         // boardsize buttons:
         Button small = new Button("Small");
         small.setFont(detailFont);
-        small.relocate((92), (420));
+        small.relocate((92), (500));
 
         Button medium = new Button("Medium");
         medium.setFont(detailFont);
-        medium.relocate((227), (420));
+        medium.relocate((227), (500));
 
         Button large = new Button("Large");
         large.setFont(detailFont);
-        large.relocate((391), (420));
+        large.relocate((391), (500));
 
-        root.getChildren().addAll(title, multi, small, medium, large);
+        // initials textfield
+        initials = new TextField();
+        initials.relocate(227, height / 3);
+        initials.setTextFormatter(new TextFormatter<>(c -> c.getControlNewText().matches(".{0,3}") ? c : null));
+        initials.setPromptText("Enter Initials here");
+
+        // clear initials button
+        Button clearInitials = new Button("Clear");
+        clearInitials.setFont(miniFont);
+        clearInitials.relocate(400, height / 3);
+
+        // scoreboard
+        Rectangle scoreBackground = new Rectangle(width / 2 + 40, height / 3 + 35, 200, 250);
+        scoreBackground.setFill(Color.WHITESMOKE);
+        Label scoreBoard = new Label("Scoreboard");
+        scoreBoard.setFont(checkFont);
+        scoreBoard.relocate(width / 2 + 70, height / 3 + 35);
+        Label first = new Label("1.");
+        first.setFont(checkFont);
+        first.relocate(width / 2 + 50, height / 3 + 80);
+        Label second = new Label("2.");
+        second.setFont(checkFont);
+        second.relocate(width / 2 + 50, height / 3 + 120);
+        Label third = new Label("3.");
+        third.setFont(checkFont);
+        third.relocate(width / 2 + 50, height / 3 + 160);
+        Label fourth = new Label("4.");
+        fourth.setFont(checkFont);
+        fourth.relocate(width / 2 + 50, height / 3 + 200);
+        Label fifth = new Label("5.");
+        fifth.setFont(checkFont);
+        fifth.relocate(width / 2 + 50, height / 3 + 240);
+
+        File scoreboardfile = new File("assets/scoreboard.txt");
+        Scanner scoreScanner = new Scanner(scoreboardfile);
+        for (int i = 0; i < 5; i++) {
+            String insertstring = scoreScanner.nextLine();
+            switch (i) {
+                case 0:
+                    first.setText("1. " + insertstring);
+                    break;
+                case 1:
+                    second.setText("2. " + insertstring);
+                    break;
+                case 2:
+                    third.setText("3. " + insertstring);
+                    break;
+                case 3:
+                    fourth.setText("4. " + insertstring);
+                    break;
+                case 4:
+                    fifth.setText("5, " + insertstring);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground,
+                scoreBoard, first, second, third, fourth, fifth);
+
+        EventHandler<ActionEvent> clearInitialHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent size) {
+                initials.clear();
+            }
+
+        };
+        clearInitials.setOnAction(clearInitialHandler);
 
         EventHandler<ActionEvent> sizeSelectSmall = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
@@ -323,6 +418,7 @@ public class GameRunner extends Application {
                 m = 15;
                 scalingConstant = 40;
                 multiplayer = multi.selectedProperty().get();
+                initialsString = initials.getText();
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
@@ -335,10 +431,13 @@ public class GameRunner extends Application {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
                 }
+                System.out.println(initialsString);
                 startGame = true;
+
             }
         };
         small.setOnAction(sizeSelectSmall);
+
         EventHandler<ActionEvent> sizeSelectMedium = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
                 root.getChildren().clear();
@@ -347,6 +446,8 @@ public class GameRunner extends Application {
                 m = 30;
                 scalingConstant = 20;
                 multiplayer = multi.selectedProperty().get();
+                initialsString = initials.getText();
+                startGame = true;
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
@@ -359,8 +460,7 @@ public class GameRunner extends Application {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
                 }
-                startGame = true;
-                // multiplayer = multi.BooleanProperty().isSelected();
+
             }
         };
         medium.setOnAction(sizeSelectMedium);
@@ -372,6 +472,7 @@ public class GameRunner extends Application {
                 m = 60;
                 scalingConstant = 10;
                 multiplayer = multi.selectedProperty().get();
+                initialsString = initials.getText();
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
@@ -385,7 +486,6 @@ public class GameRunner extends Application {
                     drawSnake(snake2);
                 }
                 startGame = true;
-                // multiplayer = multi.BooleanProperty().isSelected();
             }
         };
         large.setOnAction(sizeSelectLarge);
@@ -408,10 +508,43 @@ public class GameRunner extends Application {
 
     public void eat(Snake snake) {
         snake.Grow();
-        if(!multiplayer){
+        if (!multiplayer) {
             updateScore(snake);
         }
         root.getChildren().add(snake.get(snake.getLength() - 1));
+    }
+
+    public static void sortFile(String inputFile) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        // Read lines from the input file
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+
+        // Custom comparator for sorting based on the 5-digit number
+        Comparator<String> comparator = Comparator.comparingInt(s -> Integer.parseInt(s.substring(0, 5)));
+        comparator = comparator.reversed();
+
+        // Sort the lines
+        lines.sort(comparator);
+
+        // Write the sorted lines back to the input file, overwriting its content
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(inputFile))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+    }
+
+    public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException {
+        Path outputPath = Paths.get(outputFile);
+        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE, StandardOpenOption.APPEND);
     }
 
 }
