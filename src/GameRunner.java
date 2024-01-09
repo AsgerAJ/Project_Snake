@@ -253,7 +253,6 @@ public class GameRunner extends Application {
                     }
                     food.setXY(randX + 1, randY + 1);
                     eat(snake);
-                    root.getChildren().add(snake.get(snake.getLength() - 1));
                 }
             });
         }
@@ -264,10 +263,10 @@ public class GameRunner extends Application {
         Label gameOver = new Label("GAME OVER");
         gameOver.setFont(headFont);
         gameOver.setTextFill(Color.rgb(255, 200, 87));
-        gameOver.relocate((width/24*5-10), (height/10));
+        gameOver.relocate((width / 24 * 5 - 10), (height / 10));
         Button restart = new Button("RESTART");
         restart.setFont(detailFont);
-        restart.relocate(width/3+15, height*7/10);
+        restart.relocate(width / 3 + 15, height * 7 / 10);
         blackscreen.setOpacity(0.25);
         root.getChildren().addAll(blackscreen, restart, gameOver);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
@@ -323,18 +322,20 @@ public class GameRunner extends Application {
                 n = 15;
                 m = 15;
                 scalingConstant = 40;
+                multiplayer = multi.selectedProperty().get();
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
                 snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
-                displayScore(snake1);
+                if (!multiplayer) {
+                    displayScore(snake1);
+                }
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
                 }
                 startGame = true;
-                // multiplayer = multi.BooleanProperty().isSelected();
             }
         };
         small.setOnAction(sizeSelectSmall);
@@ -345,11 +346,15 @@ public class GameRunner extends Application {
                 n = 30;
                 m = 30;
                 scalingConstant = 20;
+                multiplayer = multi.selectedProperty().get();
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
                 snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
+                if (!multiplayer) {
+                    displayScore(snake1);
+                }
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -366,11 +371,15 @@ public class GameRunner extends Application {
                 n = 60;
                 m = 60;
                 scalingConstant = 10;
+                multiplayer = multi.selectedProperty().get();
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
                 snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
+                if (!multiplayer) {
+                    displayScore(snake1);
+                }
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -391,7 +400,7 @@ public class GameRunner extends Application {
         root.getChildren().add(score);
     }
 
-    public void updateScore(Snake snake){
+    public void updateScore(Snake snake) {
         root.getChildren().remove(score);
         score.setText("" + snake.getScore());
         root.getChildren().add(score);
@@ -399,7 +408,10 @@ public class GameRunner extends Application {
 
     public void eat(Snake snake) {
         snake.Grow();
-        updateScore(snake);
+        if(!multiplayer){
+            updateScore(snake);
+        }
+        root.getChildren().add(snake.get(snake.getLength() - 1));
     }
 
 }
