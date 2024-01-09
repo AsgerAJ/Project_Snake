@@ -261,6 +261,8 @@ public class GameRunner extends Application {
                 drawGrid(n, m);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
+                food = new Food(2,2, scalingConstant);
+                drawFood(food);
             }
         };
         button.setOnAction(event);
