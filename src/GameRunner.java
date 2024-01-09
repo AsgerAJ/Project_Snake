@@ -38,8 +38,8 @@ public class GameRunner extends Application {
     private Snake snake;
     private Snake snake2;
     private Font headFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 70);
-    private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
-    private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 19);
+    private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 30);
+    private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 24);
 
     // private boolean directionWasChanged = false;
 
@@ -263,10 +263,11 @@ public class GameRunner extends Application {
         Label gameOver = new Label("GAME OVER");
         gameOver.setFont(headFont);
         gameOver.setTextFill(Color.rgb(255, 200, 87));
-        gameOver.relocate((width/2), (scalingConstant*1));
+        gameOver.relocate((width/24*5-10), (height/10));
         Button restart = new Button("RESTART");
         restart.setFont(detailFont);
-        restart.relocate(scalingConstant*5, scalingConstant*10);
+        restart.relocate(width/3+15, height*7/10);
+        blackscreen.setOpacity(0.25);
         root.getChildren().addAll(blackscreen, restart, gameOver);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent a) {
@@ -291,7 +292,7 @@ public class GameRunner extends Application {
         Label title = new Label("SNAKE");
         title.setFont(headFont);
         title.setTextFill(Color.rgb(255, 200, 87));
-        title.relocate((140), (height / 6));
+        title.relocate((195), (height / 6));
 
         // multiplayer choice
         CheckBox multi = new CheckBox("Multiplayer");
@@ -302,15 +303,15 @@ public class GameRunner extends Application {
         // boardsize buttons:
         Button small = new Button("Small");
         small.setFont(detailFont);
-        small.relocate((110), (400));
+        small.relocate((92), (420));
 
         Button medium = new Button("Medium");
         medium.setFont(detailFont);
-        medium.relocate((200), (400));
+        medium.relocate((227), (420));
 
         Button large = new Button("Large");
         large.setFont(detailFont);
-        large.relocate((310), (400));
+        large.relocate((391), (420));
 
         root.getChildren().addAll(title, multi, small, medium, large);
 
