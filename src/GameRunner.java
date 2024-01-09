@@ -37,6 +37,7 @@ public class GameRunner extends Application {
     private Food food;
     private Snake snake;
     private Snake snake2;
+    private Label score;
     private Font headFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 70);
     private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
     private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 19);
@@ -326,6 +327,7 @@ public class GameRunner extends Application {
                 drawFood(food);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
+                displayScore(snake);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -347,6 +349,7 @@ public class GameRunner extends Application {
                 drawFood(food);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
+                displayScore(snake);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -368,6 +371,7 @@ public class GameRunner extends Application {
                 drawFood(food);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
+                displayScore(snake);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
@@ -379,8 +383,24 @@ public class GameRunner extends Application {
         large.setOnAction(sizeSelectLarge);
     }
 
+    public void displayScore(Snake snake) {
+        score = new Label();
+        score.setText("" + snake.getScore());
+        score.setFont(new Font("Arial", 30));
+        score.setTextFill(Color.RED);
+        score.relocate(10, 0);
+        root.getChildren().add(score);
+    }
+
+    public void updateScore(){
+        root.getChildren().remove(score);
+        score.setText("" + snake.getScore());
+        root.getChildren().add(score);
+    }
+
     public void eat(Snake snake) {
         snake.Grow();
+        updateScore();
     }
 
 }
