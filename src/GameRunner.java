@@ -16,7 +16,9 @@ import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class GameRunner extends Application {
 
@@ -27,7 +29,7 @@ public class GameRunner extends Application {
     public int n;
     public int m;
     public boolean multiplayer = false;
-    public boolean startGame = true;
+    public boolean startGame = false;
 
     // Private variables
     private Pane root;
@@ -43,7 +45,6 @@ public class GameRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Welcome to the snake game");
-        
 
         n = 20;
         m = 20;
@@ -52,12 +53,14 @@ public class GameRunner extends Application {
         root.setPrefSize(n, m);
         Random foodCord = new Random();
 
-        drawGrid(n, m);
-        // startScreen();
+        width = 500;
+        height = 500;
 
-        
+        drawGrid(n, m);
+        startScreen();
+
         if (startGame) {
-            food = new Food(2, 2, scalingConstant);
+            food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
             drawFood(food);
             snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
             drawSnake(snake);
@@ -248,39 +251,74 @@ public class GameRunner extends Application {
     }
 
     public void gameOver() throws FileNotFoundException {
+        Rectangle blackscreen = new Rectangle(0, 0, width, height);
         Label gameOver = new Label("GAME OVER");
-        gameOver.setFont(new Font("Modak", 40));
+        gameOver.setFont(new Font("Modak", 70));
         gameOver.setTextFill(Color.rgb(255, 200, 87));
-        gameOver.relocate((width / 2 - 105), (height * 0.2));
-        Button button = new Button("RESTART");
-        button.relocate(width / 2 - 35, height / 2);
-        root.getChildren().addAll(button, gameOver);
+        gameOver.relocate((width / 3.5), (height * 0.2));
+        Button restart = new Button("RESTART");
+        restart.setFont(new Font("Modak", 20));
+        restart.relocate(width / 4, height / 2);
+        root.getChildren().addAll(blackscreen, restart, gameOver);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent a) {
+                Random foodCord = new Random();
                 root.getChildren().clear();
                 drawGrid(n, m);
                 snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake);
+                food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
+                drawFood(food);
             }
         };
-        button.setOnAction(event);
+        restart.setOnAction(event);
     }
 
-    // public void startScreen() {
-    //     Label title = new Label("SNAKE");
-    //     title.setFont(new Font("Modak", 40));
-    //     title.setTextFill(Color.GREEN);
-    //     title.relocate((width / 2 - 125), (height * 0.2));
-    //     Button start = new Button("Start game");
-    //     title.relocate((width / 2 - 125), (height * 0.5));
-    //     root.getChildren().addAll(title, start);
-    //     EventHandler<ActionEvent> klik = new EventHandler<ActionEvent>() {
-    //         public void handle(ActionEvent a) {
-    //             root.getChildren().clear();
-    //             startGame = true;
-    //         }
-    //     };
-    // }
+    public void startScreen() {
+        Label title = new Label("SNAKE");
+        title.setFont(new Font("Modak", 70));
+        title.setTextFill(Color.rgb(255, 200, 87));
+        title.relocate((width / 3.5), (height / 6));
+        Button startG = new Button("START");
+        startG.setFont(new Font("Modak", 20));
+        startG.relocate((width / 2.45), (height * 0.8));
+        CheckBox multi = new CheckBox("Multiplayer");
+        multi.setFont(new Font("Modak", 19));
+        multi.relocate((scalingConstant*3), (scalingConstant*8-(scalingConstant*0.2)));
+        multi.setTextFill(Color.rgb(255, 200, 87));
+        TextField nSize = new TextField();
+        nSize.setPrefWidth(scalingConstant);
+        nSize.setPrefHeight(scalingConstant*0.75);
+        nSize.setFont(new Font("Britannic", 15));
+        TextField mSize = new TextField();
+        mSize.setPrefWidth(scalingConstant);
+        mSize.setPrefHeight(scalingConstant*0.75);
+        mSize.setFont(new Font("Britannic", 15));
+        nSize.relocate((3*scalingConstant), (12*scalingConstant));
+        mSize.relocate((5*scalingConstant), (12*scalingConstant));
+        Label nXm = new Label("X");
+        nXm.setFont(new Font("Britannic", 20));
+        nXm.setTextFill(Color.rgb(255, 200, 87));
+        nXm.relocate((4*scalingConstant+(0.23*scalingConstant)), (12*scalingConstant));
+        root.getChildren().addAll(startG, title, multi,nSize,mSize, nXm);
+
+
+        EventHandler<ActionEvent> klik = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent a) {
+                root.getChildren().removeAll(startG, title);
+                Random foodCord = new Random();
+                food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
+                drawFood(food);
+                snake = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                drawSnake(snake);
+                if (multiplayer) {
+                    snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
+                    drawSnake(snake2);
+                }
+            }
+        };
+        startG.setOnAction(klik);
+    }
 
     public void eat(Snake snake) {
         snake.Grow();
