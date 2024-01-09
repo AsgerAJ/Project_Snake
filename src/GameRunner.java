@@ -90,6 +90,12 @@ public class GameRunner extends Application {
                     stepHandler(snake1);
                     if (multiplayer) {
                         stepHandler(snake2);
+                        if(snake1.enemyCollide(snake2)) {
+                            snake1.setCurrentDirection(Direction.Stop);
+                        }
+                        if(snake2.enemyCollide(snake1)) {
+                            snake2.setCurrentDirection(Direction.Stop);
+                        }
                     }
                     Thread.sleep(100);
                 }
@@ -242,7 +248,7 @@ public class GameRunner extends Application {
                         randY = rand.nextInt(m);
                         for (int i = 0; i < snake.getLength(); i++) {
                             if (snake.get(i).getX() / scalingConstant == randX
-                                    && snake.get(i).getY() / scalingConstant == randY) {
+                            && snake.get(i).getY() / scalingConstant == randY) {
                                 validSpawn = false;
                                 continue;
                             }
