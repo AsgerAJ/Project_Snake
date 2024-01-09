@@ -115,6 +115,15 @@ public class Snake extends ArrayList<Rectangle> {
         return dead;
     }
 
+    public boolean enemyCollide(Snake enemy) {
+        for (int i = 1; i < enemy.getLength()-1; i++){
+            if((enemy.get(i).getX() == get(0).getX()) && (enemy.get(i).getY() == get(0).getY()) ){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Direction getDirr() {
         return this.direction;
     }
