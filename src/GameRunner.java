@@ -29,7 +29,7 @@ public class GameRunner extends Application {
     public double width;
     public int n;
     public int m;
-    public boolean multiplayer = true;
+    public boolean multiplayer = false;
     public boolean startGame = false;
 
     // Private variables
