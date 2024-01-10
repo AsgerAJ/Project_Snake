@@ -46,7 +46,8 @@ public class GameRunner extends Application {
     private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 24);
     private Font scoreFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
     private Font miniFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 12);
-
+    private Font scoreBoardFont = Font.loadFont("file:assets/fonts/LcdSolid-VpzB.ttf", 25);
+ 
     private String scoreboard = "assets/scoreboard.txt";
     private String initialsString = "";
     private String winner;
@@ -318,7 +319,7 @@ public class GameRunner extends Application {
                     public void handle(ActionEvent event) {
                         if (!multiplayer && !scoreSet) {
                             String filestring = "" + snake1.getScore();
-                            for (int resultString = filestring.length(); resultString < 5; resultString++) {
+                            for (int resultString = filestring.length(); resultString < 3; resultString++) {
                                 filestring = "0" + filestring;
                             }
                             filestring += " " + initialsString;
@@ -399,25 +400,25 @@ public class GameRunner extends Application {
                 scalingConstant * 8);
         scoreBackground.setFill(Color.rgb(115, 147, 126));
         Label scoreBoard = new Label("Scoreboard");
-        scoreBoard.setFont(checkFont);
-        scoreBoard.relocate(scalingConstant * 12.85, scalingConstant * 7 + 5);
+        scoreBoard.setFont(scoreBoardFont);
+        scoreBoard.relocate(scalingConstant * 12.5, scalingConstant * 7 + 5);
         scoreBoard.setTextFill(Color.rgb(206, 185, 146));
         scoreBoard.setUnderline(true);
         Label first = new Label("1.");
-        first.setFont(checkFont);
-        first.relocate(scalingConstant * 12.75, scalingConstant * 8.5);
+        first.setFont(scoreBoardFont);
+        first.relocate(scalingConstant * 12.5, scalingConstant * 8.5);
         Label second = new Label("2.");
-        second.setFont(checkFont);
-        second.relocate(scalingConstant * 12.7, scalingConstant * 9.5);
+        second.setFont(scoreBoardFont);
+        second.relocate(scalingConstant * 12.5, scalingConstant * 9.8125);
         Label third = new Label("3.");
-        third.setFont(checkFont);
-        third.relocate(scalingConstant * 12.7, scalingConstant * 10.5);
+        third.setFont(scoreBoardFont);
+        third.relocate(scalingConstant * 12.5, scalingConstant * 11.125);
         Label fourth = new Label("4.");
-        fourth.setFont(checkFont);
-        fourth.relocate(scalingConstant * 12.7, scalingConstant * 11.5);
+        fourth.setFont(scoreBoardFont);
+        fourth.relocate(scalingConstant * 12.5, scalingConstant * 12.4375);
         Label fifth = new Label("5.");
-        fifth.setFont(checkFont);
-        fifth.relocate(scalingConstant * 12.7, scalingConstant * 12.5);
+        fifth.setFont(scoreBoardFont);
+        fifth.relocate(scalingConstant * 12.5, scalingConstant * 13.75);
 
         File scoreboardfile = new File("assets/scoreboard.txt");
         Scanner scoreScanner = new Scanner(scoreboardfile);
