@@ -81,7 +81,6 @@ public class GameRunner extends Application {
         width = scalingConstant * n;
         height = scalingConstant * m;
         Scene scene = new Scene(root, width, height);
-
         Runnable snakeStepper = () -> {
             try {
                 while (true) {
@@ -419,11 +418,12 @@ public class GameRunner extends Application {
             public void handle(ActionEvent size) {
                 root.getChildren().clear();
                 Random foodCord = new Random();
-                n = 15;
-                m = 15;
-                scalingConstant = 40;
+                n = 8;
+                m = 8;
+                scalingConstant = 75;
                 multiplayer = multi.selectedProperty().get();
                 initialsString = initials.getText();
+                startGame = true;
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
@@ -437,7 +437,6 @@ public class GameRunner extends Application {
                     drawSnake(snake2);
                 }
                 System.out.println(initialsString);
-                startGame = true;
 
             }
         };
@@ -447,9 +446,9 @@ public class GameRunner extends Application {
             public void handle(ActionEvent size) {
                 root.getChildren().clear();
                 Random foodCord = new Random();
-                n = 30;
-                m = 30;
-                scalingConstant = 20;
+                n = 15;
+                m = 15;
+                scalingConstant = 40;
                 multiplayer = multi.selectedProperty().get();
                 initialsString = initials.getText();
                 startGame = true;
@@ -473,9 +472,9 @@ public class GameRunner extends Application {
             public void handle(ActionEvent size) {
                 root.getChildren().clear();
                 Random foodCord = new Random();
-                n = 60;
-                m = 60;
-                scalingConstant = 10;
+                n = 30;
+                m = 30;
+                scalingConstant = 20;
                 multiplayer = multi.selectedProperty().get();
                 initialsString = initials.getText();
                 drawGrid(n, m);
