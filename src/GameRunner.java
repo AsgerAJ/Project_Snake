@@ -276,7 +276,7 @@ public class GameRunner extends Application {
         if (!gameOverEvent) {
             gameOverEvent = true;
             Rectangle blackscreen = new Rectangle(0, 0, width, height);
-            blackscreen.setOpacity(0.5);
+            blackscreen.setOpacity(0.6);
             Label gameOver = new Label("GAME OVER");
             gameOver.setFont(gameOverFont);
 
@@ -305,7 +305,11 @@ public class GameRunner extends Application {
                 playerScore.setText("" + snake1.getScore());
                 playerScore.setFont(Font.font("Futura", FontWeight.BOLD, width/3));
                 playerScore.setTextFill(Color.rgb(115, 147, 126));
+                if (snake1.getScore()<10){
                 playerScore.relocate(width/15*6, height/15*4);
+                } else {
+                playerScore.relocate(width/15*4, height/15*4); 
+                }
                 root.getChildren().add(playerScore);
 
 
