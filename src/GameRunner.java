@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
