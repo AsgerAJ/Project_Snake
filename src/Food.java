@@ -3,10 +3,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Food extends Rectangle {
     private double scalingConstant;
-
-
-
-
+    
     public Food(int x, int y, double scalingConstant){
         super(x*scalingConstant-scalingConstant, y*scalingConstant-scalingConstant, scalingConstant, scalingConstant);
         super.setArcHeight(scalingConstant);

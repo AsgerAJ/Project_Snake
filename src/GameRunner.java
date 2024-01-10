@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -89,9 +88,13 @@ public class GameRunner extends Application {
                         stepHandler(snake2);
                         if(snake1.enemyCollide(snake2)) {
                             snake1.setCurrentDirection(Direction.Stop);
+                            snake2.setCurrentDirection(Direction.Stop);
+                            snake1.murder();
                         }
                         if(snake2.enemyCollide(snake1)) {
+                            snake1.setCurrentDirection(Direction.Stop);
                             snake2.setCurrentDirection(Direction.Stop);
+                            snake2.murder();
                         }
                     }
                     Thread.sleep(100);
