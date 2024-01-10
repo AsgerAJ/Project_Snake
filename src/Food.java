@@ -5,8 +5,7 @@ public class Food extends Rectangle {
     private double scalingConstant;
 
     public Food(int x, int y, double scalingConstant) {
-        super(x * scalingConstant - scalingConstant, y * scalingConstant - scalingConstant, scalingConstant,
-                scalingConstant);
+        super(x * scalingConstant - scalingConstant, y * scalingConstant - scalingConstant, scalingConstant, scalingConstant);
         super.setArcHeight(scalingConstant);
         super.setArcWidth(scalingConstant);
         super.setFill(Color.rgb(194, 1, 20));
