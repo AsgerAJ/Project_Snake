@@ -21,12 +21,12 @@ public class Snake extends ArrayList<Rectangle> {
         this.sC = sC;
         this.score = score;
         this.playerNumber = playerNumber;
-        for(int i = 0; i < startLength; i++){
-            super.add(new Rectangle((x / 2+i) * sC, ((y + 2*playerNumber) / 2) * sC, sC, sC));
-            if(this.playerNumber == 0) {
-                super.get(i).setFill(Color.rgb(241,196,15));
+        for (int i = 0; i < startLength; i++) {
+            super.add(new Rectangle((x / 2 + i) * sC, ((y + 2 * playerNumber) / 2) * sC, sC, sC));
+            if (this.playerNumber == 0) {
+                super.get(i).setFill(Color.rgb(241, 196, 15));
             } else {
-                super.get(i).setFill(Color.rgb(0,204,102));
+                super.get(i).setFill(Color.rgb(0, 204, 102));
             }
         }
         this.direction = direction;
@@ -48,7 +48,7 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
 
             case Down:
-                if (get(0).getY() + getSC() > getYlim() * getSC()- sC) {
+                if (get(0).getY() + getSC() > getYlim() * getSC() - sC) {
                     get(size() - 1).setY(0);
                     get(size() - 1).setX(get(0).getX());
                 } else {
@@ -68,7 +68,7 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
 
             case Right:
-                if (get(0).getX() + getSC() > getXlim() * getSC()-sC) {
+                if (get(0).getX() + getSC() > getXlim() * getSC() - sC) {
                     get(size() - 1).setX(0);
                     get(size() - 1).setY(get(0).getY());
                 } else {
@@ -87,33 +87,34 @@ public class Snake extends ArrayList<Rectangle> {
 
     public void Grow() {
         scoreIncrease();
-        super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(),getSC()));
-        if(this.playerNumber == 0) {
-            super.get(getLength()-1).setFill(Color.rgb(241,196,14));
+        super.add(
+                new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(), getSC()));
+        if (this.playerNumber == 0) {
+            super.get(getLength() - 1).setFill(Color.rgb(241, 196, 14));
         } else {
-            super.get(getLength()-1).setFill(Color.rgb(0,204,102));
+            super.get(getLength() - 1).setFill(Color.rgb(0, 204, 102));
         }
-        
+
     }
 
     public boolean foodCollision(Rectangle food) {
-        if (food.getX()==get(0).getX() && food.getY() == get(0).getY()) {
+        if (food.getX() == get(0).getX() && food.getY() == get(0).getY()) {
             return true;
         }
-    return false;
+        return false;
     }
 
-    public void selfCollide(){
-        for (int i = 1; i < getLength(); i++){
-            if((get(i).getX() == get(0).getX()) && (get(i).getY() == get(0).getY()) ){
+    public void selfCollide() {
+        for (int i = 1; i < getLength(); i++) {
+            if ((get(i).getX() == get(0).getX()) && (get(i).getY() == get(0).getY())) {
                 this.alive = false;
             }
         }
     }
 
     public boolean enemyCollide(Snake enemy) {
-        for (int i = 1; i < enemy.getLength(); i++){
-            if((enemy.get(i).getX() == get(0).getX()) && (enemy.get(i).getY() == get(0).getY()) ){
+        for (int i = 1; i < enemy.getLength(); i++) {
+            if ((enemy.get(i).getX() == get(0).getX()) && (enemy.get(i).getY() == get(0).getY())) {
                 return true;
             }
         }
@@ -125,7 +126,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public void scoreIncrease() {
-        this.score = score +1;
+        this.score = score + 1;
     }
 
     public int getScore() {
@@ -164,24 +165,24 @@ public class Snake extends ArrayList<Rectangle> {
         return this.directionWasChanged;
     }
 
-    public double getTailCoordX(){
+    public double getTailCoordX() {
         return this.tailX;
     }
 
-    public double getTailCoordY(){
+    public double getTailCoordY() {
         return this.tailY;
     }
 
-    public void setTailCoords(){
-        this.tailX = super.get(super.size()-1).getX();
-        this.tailY = super.get(super.size()-1).getY();
+    public void setTailCoords() {
+        this.tailX = super.get(super.size() - 1).getX();
+        this.tailY = super.get(super.size() - 1).getY();
     }
 
-    public void murder(){
+    public void murder() {
         this.alive = false;
     }
 
-    public boolean getAlive(){
+    public boolean getAlive() {
         return this.alive;
     }
 }

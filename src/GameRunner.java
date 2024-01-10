@@ -40,11 +40,13 @@ public class GameRunner extends Application {
     private Label score;
     private TextField initials;
     private Font headFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 140);
+    private Font gameOverFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 100);
+    private Font winnerFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 70);
     private Font detailFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 30);
     private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 24);
     private Font scoreFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
     private Font miniFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 12);
-    private Font numFont = Font.font("Futura",FontWeight.BOLD, 30);
+    private Font numFont = Font.font("Futura", FontWeight.BOLD, 30);
     private String scoreboard = "assets/scoreboard.txt";
     private String initialsString = "";
     private String winner;
@@ -213,9 +215,9 @@ public class GameRunner extends Application {
                 Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
                         scalingConstant);
                 if (((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) {
-                    back.setFill(Color.rgb(61,66,65));
+                    back.setFill(Color.rgb(61, 66, 65));
                 } else {
-                    back.setFill(Color.rgb(37,42,39));
+                    back.setFill(Color.rgb(37, 42, 39));
                 }
                 root.getChildren().add(back);
             }
@@ -273,52 +275,55 @@ public class GameRunner extends Application {
         if (!gameOverEvent) {
             gameOverEvent = true;
             Rectangle blackscreen = new Rectangle(0, 0, width, height);
+            blackscreen.setOpacity(0.5);
             Label gameOver = new Label("GAME OVER");
-            gameOver.setFont(headFont);
-            gameOver.setTextFill(Color.rgb(255, 200, 87));
-            gameOver.relocate((width / 24 * 5 - 10), (height / 10));
+            gameOver.setFont(gameOverFont);
+            
+            gameOver.setTextFill(Color.rgb(115, 147, 126));
+            gameOver.relocate((width/15), (height/20));
             Button restart = new Button("RESTART");
             restart.setFont(detailFont);
-            restart.relocate(width / 3 + 15, height * 7 / 10);
+            restart.relocate((width/15)*5.5, (height/15)*12.12);
+            root.getChildren().add(blackscreen);
 
             if (multiplayer) {
                 Label winnerLabel = new Label(winner + " wins!");
-                winnerLabel.setFont(headFont);
-                winnerLabel.setTextFill(Color.BLACK);
-                gameOver.relocate((width / 24 * 5 - 10), (height / 10 + 40));
+                winnerLabel.setFont(winnerFont);
+                winnerLabel.setTextFill(Color.rgb(255, 200, 87));
+                winnerLabel.relocate((width / 15*2), (height /15 * 5));
+                root.getChildren().add(winnerLabel);
+                
             }
 
-            root.getChildren().addAll(blackscreen, restart, gameOver);
+            root.getChildren().addAll(restart, gameOver);
             if (!multiplayer) {
                 addScore = new Button("Add score to scoreboard");
                 addScore.setFont(scoreFont);
-                addScore.relocate((width / 4) + 20, (height * 7 / 10) - 50);
+                addScore.relocate((width/15)*4.35, (height/15)*10.12);
                 if (!scoreSet) {
                     root.getChildren().add(addScore);
                 }
                 EventHandler<ActionEvent> addScoreEvent = new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent event) {
-                    if (!multiplayer && !scoreSet) {
-                        String filestring = "" + snake1.getScore();
-                        for (int resultString = filestring.length(); resultString < 5; resultString++) {
-                            filestring = "0" + filestring;
+                    public void handle(ActionEvent event) {
+                        if (!multiplayer && !scoreSet) {
+                            String filestring = "" + snake1.getScore();
+                            for (int resultString = filestring.length(); resultString < 5; resultString++) {
+                                filestring = "0" + filestring;
+                            }
+                            filestring += " " + initialsString;
+                            try {
+                                writeSingleLine(scoreboard, filestring);
+                                System.out.println("Line written successfully!");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        filestring += " " + initialsString;
-                        try {
-                            writeSingleLine(scoreboard, filestring);
-                            System.out.println("Line written successfully!");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        root.getChildren().remove(addScore);
+                        scoreSet = true;
                     }
-                    root.getChildren().remove(addScore);
-                    scoreSet = true;
-                }
-            };
-            addScore.setOnAction(addScoreEvent);
+                };
+                addScore.setOnAction(addScoreEvent);
             }
-
-            
 
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent a) {
@@ -345,14 +350,14 @@ public class GameRunner extends Application {
         // Title
         Label title = new Label("SNAKE");
         title.setFont(headFont);
-        title.setTextFill(Color.rgb(115,147,126));
-        title.relocate((88), (height / 200-19));
+        title.setTextFill(Color.rgb(115, 147, 126));
+        title.relocate((88), (height / 200 - 19));
 
         // multiplayer choice
         CheckBox multi = new CheckBox("Multiplayer");
         multi.setFont(checkFont);
         multi.relocate((scalingConstant * 3), (scalingConstant * 9 - (scalingConstant * 0.2)));
-        multi.setTextFill(Color.rgb(206,185,146));
+        multi.setTextFill(Color.rgb(206, 185, 146));
 
         // boardsize buttons:
         Button small = new Button("Small");
@@ -369,38 +374,39 @@ public class GameRunner extends Application {
 
         // initials textfield
         initials = new TextField();
-        initials.relocate(scalingConstant*3,scalingConstant*7+2);
+        initials.relocate(scalingConstant * 3, scalingConstant * 7 + 2);
         initials.setTextFormatter(new TextFormatter<>(c -> c.getControlNewText().matches(".{0,3}") ? c : null));
         initials.setPromptText("Enter Initials here");
 
         // clear initials button
         Button clearInitials = new Button("Clear");
         clearInitials.setFont(miniFont);
-        clearInitials.relocate(scalingConstant*8.75,scalingConstant*7);
+        clearInitials.relocate(scalingConstant * 8.75, scalingConstant * 7);
 
         // scoreboard
-        Rectangle scoreBackground = new Rectangle(scalingConstant*12, scalingConstant*7, scalingConstant*6, scalingConstant*8);
-        scoreBackground.setFill(Color.rgb(115,147,126));
+        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6,
+                scalingConstant * 8);
+        scoreBackground.setFill(Color.rgb(115, 147, 126));
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(checkFont);
-        scoreBoard.relocate(scalingConstant*12.85, scalingConstant*7+5);
-        scoreBoard.setTextFill(Color.rgb(206,185,146));
+        scoreBoard.relocate(scalingConstant * 12.85, scalingConstant * 7 + 5);
+        scoreBoard.setTextFill(Color.rgb(206, 185, 146));
         scoreBoard.setUnderline(true);
         Label first = new Label("1.");
         first.setFont(checkFont);
-        first.relocate(scalingConstant*12.75,scalingConstant*8.5);
+        first.relocate(scalingConstant * 12.75, scalingConstant * 8.5);
         Label second = new Label("2.");
         second.setFont(checkFont);
-        second.relocate(scalingConstant*12.7,scalingConstant*9.5);
+        second.relocate(scalingConstant * 12.7, scalingConstant * 9.5);
         Label third = new Label("3.");
         third.setFont(checkFont);
-        third.relocate(scalingConstant*12.7,scalingConstant*10.5);
+        third.relocate(scalingConstant * 12.7, scalingConstant * 10.5);
         Label fourth = new Label("4.");
         fourth.setFont(checkFont);
-        fourth.relocate(scalingConstant*12.7,scalingConstant*11.5);
+        fourth.relocate(scalingConstant * 12.7, scalingConstant * 11.5);
         Label fifth = new Label("5.");
         fifth.setFont(checkFont);
-        fifth.relocate(scalingConstant*12.7,scalingConstant*12.5);
+        fifth.relocate(scalingConstant * 12.7, scalingConstant * 12.5);
 
         File scoreboardfile = new File("assets/scoreboard.txt");
         Scanner scoreScanner = new Scanner(scoreboardfile);
@@ -526,7 +532,7 @@ public class GameRunner extends Application {
         score = new Label();
         score.setText("" + snake.getScore());
         score.setFont(numFont);
-        score.setTextFill(Color.rgb(115,147,126));
+        score.setTextFill(Color.rgb(115, 147, 126));
         score.relocate(10, 0);
         root.getChildren().add(score);
     }
