@@ -72,8 +72,6 @@ public class GameRunner extends Application {
 
         root = new Pane();
         root.setPrefSize(n, m);
-        Random foodCord = new Random();
-
         width = 600;
         height = 600;
 
@@ -404,6 +402,7 @@ public class GameRunner extends Application {
                     break;
             }
         }
+        scoreScanner.close();
 
         root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground,
                 scoreBoard, first, second, third, fourth, fifth);
