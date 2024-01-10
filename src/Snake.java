@@ -22,11 +22,7 @@ public class Snake extends ArrayList<Rectangle> {
         this.playerNumber = playerNumber;
         for (int i = 0; i < startLength; i++) {
             super.add(new Rectangle((x / 2 + i) * sC, ((y + 2 * playerNumber) / 2) * sC, sC, sC));
-            if (this.playerNumber == 0) {
-                super.get(i).setFill(Color.rgb(241, 196, 15));
-            } else {
-                super.get(i).setFill(Color.rgb(0, 204, 102));
-            }
+            super.get(i).setFill((this.playerNumber == 0) ? Color.rgb(241, 196, 15) : Color.rgb(0, 204, 102));
         }
         this.direction = direction;
         setTailCoords();

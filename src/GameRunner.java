@@ -71,13 +71,7 @@ public class GameRunner extends Application {
         }
         n = 20;
         m = 20;
-
-        if (n > m) {
-            scalingConstant = 600 / (n);
-        } else {
-            scalingConstant = 600 / (m);
-        }
-
+        scalingConstant = (n > m) ? 600 / (n) : 600 / (m);
         root = new Pane();
         root.setPrefSize(n, m);
         width = 600;
@@ -110,7 +104,6 @@ public class GameRunner extends Application {
                     }
                     Thread.sleep(100);
                 }
-
             } catch (InterruptedException ie) {
             }
         };
@@ -122,7 +115,6 @@ public class GameRunner extends Application {
                 if (multiplayer) {
                     snake2.setTailCoords();
                 }
-
                 switch (code) {
                     case UP:
                         if (snake1.getAlive() 
@@ -156,7 +148,6 @@ public class GameRunner extends Application {
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
-
                     case W:
                         if (multiplayer
                         && snake2.getAlive() 
@@ -193,12 +184,10 @@ public class GameRunner extends Application {
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
-
                     case SPACE:
                         snake1.Grow();
                         root.getChildren().add(snake1.get(snake1.getLength() - 1));
                         break;
-
                     case G:
                         snake1.setCurrentDirection(Direction.Stop);
                         if (multiplayer) {
