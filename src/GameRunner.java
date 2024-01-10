@@ -46,7 +46,7 @@ public class GameRunner extends Application {
     private Font checkFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 24);
     private Font scoreFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
     private Font miniFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 12);
-    private Font numFont = Font.font("Futura", FontWeight.BOLD, 30);
+
     private String scoreboard = "assets/scoreboard.txt";
     private String initialsString = "";
     private String winner;
@@ -278,28 +278,39 @@ public class GameRunner extends Application {
             blackscreen.setOpacity(0.5);
             Label gameOver = new Label("GAME OVER");
             gameOver.setFont(gameOverFont);
-            
+
             gameOver.setTextFill(Color.rgb(115, 147, 126));
-            gameOver.relocate((width/15), (height/20));
+            gameOver.relocate((width / 15), (height / 20));
             Button restart = new Button("RESTART");
             restart.setFont(detailFont);
-            restart.relocate((width/15)*5.5, (height/15)*12.12);
+            restart.relocate((width / 15) * 5.5, (height / 15) * 12.12);
             root.getChildren().add(blackscreen);
-
             if (multiplayer) {
                 Label winnerLabel = new Label(winner + " wins!");
                 winnerLabel.setFont(winnerFont);
-                winnerLabel.setTextFill(Color.rgb(255, 200, 87));
-                winnerLabel.relocate((width / 15*2), (height /15 * 5));
+                if (winner == "Player 1") {
+                    winnerLabel.setTextFill(Color.rgb(241, 196, 15));
+                } else {
+                    winnerLabel.setTextFill(Color.rgb(0, 204, 102));
+                }
+                winnerLabel.relocate((width / 15 * 2), (height / 15 * 5));
                 root.getChildren().add(winnerLabel);
-                
+
             }
 
             root.getChildren().addAll(restart, gameOver);
             if (!multiplayer) {
+                Label playerScore = new Label();
+                playerScore.setText("" + snake1.getScore());
+                playerScore.setFont(Font.font("Futura", FontWeight.BOLD, width/3));
+                playerScore.setTextFill(Color.rgb(115, 147, 126));
+                playerScore.relocate(width/15*6, height/15*4);
+                root.getChildren().add(playerScore);
+
+
                 addScore = new Button("Add score to scoreboard");
                 addScore.setFont(scoreFont);
-                addScore.relocate((width/15)*4.35, (height/15)*10.12);
+                addScore.relocate((width / 15) * 4.35, (height / 15) * 10.12);
                 if (!scoreSet) {
                     root.getChildren().add(addScore);
                 }
@@ -531,9 +542,9 @@ public class GameRunner extends Application {
     public void displayScore(Snake snake) {
         score = new Label();
         score.setText("" + snake.getScore());
-        score.setFont(numFont);
+        score.setFont(Font.font("Futura", FontWeight.BOLD, scalingConstant));
         score.setTextFill(Color.rgb(115, 147, 126));
-        score.relocate(10, 0);
+        score.relocate(scalingConstant / 5, -scalingConstant / 7);
         root.getChildren().add(score);
     }
 
