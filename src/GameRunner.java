@@ -356,7 +356,10 @@ public class GameRunner extends Application {
 
         // scoreboard
         Rectangle scoreBackground = new Rectangle(width / 2 + 40, height / 3 + 35, 200, 250);
-        scoreBackground.setFill(Color.WHITESMOKE);
+        scoreBackground.setFill(Color.rgb(109, 74, 191));
+        scoreBackground.setFill(Color.rgb(136, 91, 242));
+        //scoreBackground.setOpacity(0.75);
+        //scoreBackground.setFill(Color.WHITESMOKE);
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(checkFont);
         scoreBoard.relocate(width / 2 + 70, height / 3 + 35);
@@ -493,6 +496,7 @@ public class GameRunner extends Application {
             }
         };
         large.setOnAction(sizeSelectLarge);
+        scoreScanner.close();
     }
 
     public void displayScore(Snake snake) {
