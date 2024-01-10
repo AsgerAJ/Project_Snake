@@ -32,8 +32,6 @@ public class Snake extends ArrayList<Rectangle> {
         this.direction = direction;
         setTailCoords();
         this.alive = true;
-        //playerNumber++;
-        // this.playerNumber = playerNumber;
     }
 
     public void moveSnake(Direction newDirection) {
