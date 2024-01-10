@@ -3,7 +3,6 @@ import javafx.scene.shape.*;
 import java.util.*;
 
 public class Snake extends ArrayList<Rectangle> {
-
     private Direction direction;
     public int playerNumber;
     private int x;
@@ -36,50 +35,26 @@ public class Snake extends ArrayList<Rectangle> {
 
     public void moveSnake(Direction newDirection) {
         switch (newDirection) {
-
             case Up:
-                if (get(0).getY() - getSC() < 0) {
-                    get(size() - 1).setY(getYlim() * getSC() - getSC());
-                    get(size() - 1).setX(get(0).getX());
-                } else {
-                    get(size() - 1).setY(get(0).getY() - getSC());
-                    get(size() - 1).setX(get(0).getX());
-                }
+                get(size() - 1).setY((get(0).getY() - getSC() < 0) ? getYlim() * getSC() - getSC() : get(0).getY() - getSC());
+                get(size() - 1).setX(get(0).getX());
                 break;
 
             case Down:
-                if (get(0).getY() + getSC() > getYlim() * getSC() - sC) {
-                    get(size() - 1).setY(0);
-                    get(size() - 1).setX(get(0).getX());
-                } else {
-                    get(size() - 1).setY(get(0).getY() + getSC());
-                    get(size() - 1).setX(get(0).getX());
-                }
+                get(size() - 1).setY((get(0).getY() + getSC() > getYlim() * getSC()- sC) ? 0 : get(0).getY() + getSC());
+                get(size() - 1).setX(get(0).getX());
                 break;
 
             case Left:
-                if (get(0).getX() - getSC() < 0) {
-                    get(size() - 1).setX(getXlim() * getSC() - getSC());
-                    get(size() - 1).setY(get(0).getY());
-                } else {
-                    get(size() - 1).setX(get(0).getX() - getSC());
-                    get(size() - 1).setY(get(0).getY());
-                }
+                get(size() - 1).setX((get(0).getX() - getSC() < 0) ? getXlim() * getSC() - getSC() : get(0).getX() - getSC());
+                get(size() - 1).setY(get(0).getY());
                 break;
 
             case Right:
-                if (get(0).getX() + getSC() > getXlim() * getSC() - sC) {
-                    get(size() - 1).setX(0);
-                    get(size() - 1).setY(get(0).getY());
-                } else {
-                    get(size() - 1).setX(get(0).getX() + getSC());
-                    get(size() - 1).setY(get(0).getY());
-                }
-
+                get(size() - 1).setX((get(0).getX() + getSC() > getXlim() * getSC()-sC) ? 0 : get(0).getX() + getSC());
+                get(size() - 1).setY(get(0).getY());
                 break;
 
-            case Stop:
-                break;
             default:
                 break;
         }
@@ -87,14 +62,8 @@ public class Snake extends ArrayList<Rectangle> {
 
     public void Grow() {
         scoreIncrease();
-        super.add(
-                new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(), getSC()));
-        if (this.playerNumber == 0) {
-            super.get(getLength() - 1).setFill(Color.rgb(241, 196, 14));
-        } else {
-            super.get(getLength() - 1).setFill(Color.rgb(0, 204, 102));
-        }
-
+        super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(), getSC()));
+        super.get(getLength() - 1).setFill((this.playerNumber == 0) ? Color.rgb(241, 196, 14) : Color.rgb(0, 204, 102));
     }
 
     public boolean foodCollision(Rectangle food) {

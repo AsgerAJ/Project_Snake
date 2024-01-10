@@ -125,29 +125,33 @@ public class GameRunner extends Application {
 
                 switch (code) {
                     case UP:
-                        if (snake1.getAlive() && snake1.getDirr() != Direction.Down
-                                && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive() 
+                        && snake1.getDirr() != Direction.Down
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Up);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case DOWN:
-                        if (snake1.getAlive() && snake1.getDirr() != Direction.Up
-                                && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive() 
+                        && snake1.getDirr() != Direction.Up
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Down);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case LEFT:
-                        if (snake1.getAlive() && snake1.getDirr() != Direction.Right
-                                && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive() 
+                        && snake1.getDirr() != Direction.Right
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Left);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case RIGHT:
-                        if (snake1.getAlive() && snake1.getDirr() != Direction.Left
-                                && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive() 
+                        && snake1.getDirr() != Direction.Left
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Right);
                             snake1.setDirectionWasChanged(true);
                         }
@@ -155,32 +159,36 @@ public class GameRunner extends Application {
 
                     case W:
                         if (multiplayer
-                                && snake2.getAlive() && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Down) {
+                        && snake2.getAlive() 
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Down) {
                             snake2.setCurrentDirection(Direction.Up);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case S:
                         if (multiplayer
-                                && snake2.getAlive() && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Up && snake2.getAlive()) {
+                        && snake2.getAlive() 
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Up) {
                             snake2.setCurrentDirection(Direction.Down);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case A:
                         if (multiplayer
-                                && snake2.getAlive() && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Right && snake2.getAlive()) {
+                        && snake2.getAlive() 
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Right) {
                             snake2.setCurrentDirection(Direction.Left);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case D:
                         if (multiplayer
-                                && snake2.getAlive() && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Left && snake2.getAlive()) {
+                        && snake2.getAlive() 
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Left) {
                             snake2.setCurrentDirection(Direction.Right);
                             snake2.setDirectionWasChanged(true);
                         }
@@ -216,13 +224,8 @@ public class GameRunner extends Application {
     public void drawGrid(int x, int y) { // Colours background
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
-                        scalingConstant);
-                if (((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) {
-                    back.setFill(Color.rgb(61, 66, 65));
-                } else {
-                    back.setFill(Color.rgb(37, 42, 39));
-                }
+                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant, scalingConstant);
+                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65) : Color.rgb(37, 42, 39));
                 root.getChildren().add(back);
             }
         }
@@ -262,7 +265,7 @@ public class GameRunner extends Application {
                         randY = rand.nextInt(m);
                         for (int i = 0; i < snake.getLength(); i++) {
                             if (snake.get(i).getX() / scalingConstant == randX
-                                    && snake.get(i).getY() / scalingConstant == randY) {
+                            && snake.get(i).getY() / scalingConstant == randY) {
                                 validSpawn = false;
                                 continue;
                             }
@@ -282,7 +285,6 @@ public class GameRunner extends Application {
             blackscreen.setOpacity(0.5);
             Label gameOver = new Label("GAME OVER");
             gameOver.setFont(gameOverFont);
-
             gameOver.setTextFill(Color.rgb(115, 147, 126));
             gameOver.relocate((width / 15), (height / 20));
             Button restart = new Button("RESTART");
@@ -292,17 +294,12 @@ public class GameRunner extends Application {
             if (multiplayer) {
                 Label winnerLabel = new Label(winner + " wins!");
                 winnerLabel.setFont(winnerFont);
-                if (winner == "Player 1") {
-                    winnerLabel.setTextFill(Color.rgb(241, 196, 15));
-                } else {
-                    winnerLabel.setTextFill(Color.rgb(0, 204, 102));
-                }
+                winnerLabel.setTextFill((winner == "Player 1") ? Color.rgb(241, 196, 15) : Color.rgb(0, 204, 102));
                 winnerLabel.relocate((width / 15 * 2), (height / 15 * 5));
                 root.getChildren().add(winnerLabel);
-
             }
-
             root.getChildren().addAll(restart, gameOver);
+
             if (!multiplayer) {
                 Label playerScore = new Label();
                 playerScore.setText("" + snake1.getScore());
@@ -310,14 +307,13 @@ public class GameRunner extends Application {
                 playerScore.setTextFill(Color.rgb(115, 147, 126));
                 playerScore.relocate(width/15*6, height/15*4);
                 root.getChildren().add(playerScore);
-
-
                 addScore = new Button("Add score to scoreboard");
                 addScore.setFont(scoreFont);
                 addScore.relocate((width / 15) * 4.35, (height / 15) * 10.12);
                 if (!scoreSet) {
                     root.getChildren().add(addScore);
                 }
+
                 EventHandler<ActionEvent> addScoreEvent = new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent event) {
                         if (!multiplayer && !scoreSet) {
@@ -399,8 +395,7 @@ public class GameRunner extends Application {
         clearInitials.relocate(scalingConstant * 8.75, scalingConstant * 7);
 
         // scoreboard
-        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6,
-                scalingConstant * 8);
+        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6, scalingConstant * 8);
         scoreBackground.setFill(Color.rgb(115, 147, 126));
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(scoreBoardFont);
@@ -443,20 +438,17 @@ public class GameRunner extends Application {
                 case 4:
                     fifth.setText("5. " + insertstring);
                     break;
-
                 default:
                     break;
             }
         }
-        scoreScanner.close();
-
         root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground, scoreBoard, first, second, third, fourth, fifth);
+        scoreScanner.close();
 
         EventHandler<ActionEvent> clearInitialHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
                 initials.clear();
             }
-
         };
         clearInitials.setOnAction(clearInitialHandler);
 
@@ -476,15 +468,12 @@ public class GameRunner extends Application {
                 drawFood(food);
                 snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
-                if (!multiplayer) {
-                    displayScore(snake1);
-                }
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
+                } else {
+                    displayScore(snake1);
                 }
-                System.out.println(initialsString);
-
             }
         };
         small.setOnAction(sizeSelectSmall);
@@ -505,19 +494,19 @@ public class GameRunner extends Application {
                 drawFood(food);
                 snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
-                if (!multiplayer) {
-                    displayScore(snake1);
-                }
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
+                } else {
+                    displayScore(snake1);
                 }
-
             }
         };
         medium.setOnAction(sizeSelectMedium);
+        
         EventHandler<ActionEvent> sizeSelectLarge = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
+                gameIsStarted = true;
                 root.getChildren().clear();
                 Random foodCord = new Random();
                 n = 30;
@@ -530,18 +519,15 @@ public class GameRunner extends Application {
                 drawFood(food);
                 snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
-                if (!multiplayer) {
-                    displayScore(snake1);
-                }
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
                     drawSnake(snake2);
+                } else {
+                    displayScore(snake1);
                 }
-                startGame = true;
             }
         };
         large.setOnAction(sizeSelectLarge);
-        scoreScanner.close();
     }
 
     public void displayScore(Snake snake) {
@@ -596,8 +582,6 @@ public class GameRunner extends Application {
 
     public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException {
         Path outputPath = Paths.get(outputFile);
-        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
     }
-
 }
