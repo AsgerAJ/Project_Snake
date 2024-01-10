@@ -1,11 +1,7 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import java.util.*;
 
 public class Food extends Rectangle {
-
-    private int x;
-    private int y;
     private double scalingConstant;
 
 
