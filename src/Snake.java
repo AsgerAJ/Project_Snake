@@ -103,14 +103,12 @@ public class Snake extends ArrayList<Rectangle> {
     return false;
     }
 
-    public boolean selfCollide(){
-        boolean dead = false;
+    public void selfCollide(){
         for (int i = 1; i < getLength()-1; i++){
             if((get(i).getX() == get(0).getX()) && (get(i).getY() == get(0).getY()) ){
-                return dead = true;
+                this.alive = false;
             }
         }
-        return dead;
     }
 
     public boolean enemyCollide(Snake enemy) {

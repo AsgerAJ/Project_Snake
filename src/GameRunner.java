@@ -45,6 +45,9 @@ public class GameRunner extends Application {
     private Font miniFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 12);
     private String scoreboard = "assets/scoreboard.txt";
     private String initialsString = "";
+    private String winner;
+    private Button addScore;
+    private boolean gameOverEvent = false;
     // private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
@@ -86,15 +89,17 @@ public class GameRunner extends Application {
                     stepHandler(snake1);
                     if (multiplayer) {
                         stepHandler(snake2);
-                        if(snake1.enemyCollide(snake2)) {
+                        if (snake1.enemyCollide(snake2)) {
                             snake1.setCurrentDirection(Direction.Stop);
                             snake2.setCurrentDirection(Direction.Stop);
                             snake1.murder();
+                            winner = "Player 2";
                         }
-                        if(snake2.enemyCollide(snake1)) {
+                        if (snake2.enemyCollide(snake1)) {
                             snake1.setCurrentDirection(Direction.Stop);
                             snake2.setCurrentDirection(Direction.Stop);
                             snake2.murder();
+                            winner = "Player 1";
                         }
                     }
                     Thread.sleep(100);
@@ -230,7 +235,8 @@ public class GameRunner extends Application {
                 snake.setDirectionWasChanged(false);
                 snake.moveSnake(snake.getDirr());
                 Collections.rotate(snake, 1);
-                if (snake.selfCollide()) {
+                snake.selfCollide();
+                if (!snake.getAlive()) {
                     snake.setCurrentDirection(Direction.Stop);
                     snake.murder();
                     try {
@@ -248,7 +254,7 @@ public class GameRunner extends Application {
                         randY = rand.nextInt(m);
                         for (int i = 0; i < snake.getLength(); i++) {
                             if (snake.get(i).getX() / scalingConstant == randX
-                            && snake.get(i).getY() / scalingConstant == randY) {
+                                    && snake.get(i).getY() / scalingConstant == randY) {
                                 validSpawn = false;
                                 continue;
                             }
@@ -262,65 +268,78 @@ public class GameRunner extends Application {
     }
 
     public void gameOver() throws FileNotFoundException {
+        if (!gameOverEvent) {
+            gameOverEvent = true;
+            Rectangle blackscreen = new Rectangle(0, 0, width, height);
+            Label gameOver = new Label("GAME OVER");
+            gameOver.setFont(headFont);
+            gameOver.setTextFill(Color.rgb(255, 200, 87));
+            gameOver.relocate((width / 24 * 5 - 10), (height / 10));
+            Button restart = new Button("RESTART");
+            restart.setFont(detailFont);
+            restart.relocate(width / 3 + 15, height * 7 / 10);
 
-        Rectangle blackscreen = new Rectangle(0, 0, width, height);
-        Label gameOver = new Label("GAME OVER");
-        gameOver.setFont(headFont);
-        gameOver.setTextFill(Color.rgb(255, 200, 87));
-        gameOver.relocate((width / 24 * 5 - 10), (height / 10));
-        Button restart = new Button("RESTART");
-        restart.setFont(detailFont);
-        restart.relocate(width / 3 + 15, height * 7 / 10);
-        blackscreen.setOpacity(0.25);
+            if (multiplayer) {
+                Label winnerLabel = new Label(winner + " wins!");
+                winnerLabel.setFont(headFont);
+                winnerLabel.setTextFill(Color.BLACK);
+                gameOver.relocate((width / 24 * 5 - 10), (height / 10 + 40));
+            }
 
-        Button addScore = new Button("Add score to scoreboard");
-        addScore.setFont(scoreFont);
-        addScore.relocate((width / 4) + 20, (height * 7 / 10) - 50);
+            root.getChildren().addAll(blackscreen, restart, gameOver);
+            if (!multiplayer) {
+                addScore = new Button("Add score to scoreboard");
+                addScore.setFont(scoreFont);
+                addScore.relocate((width / 4) + 20, (height * 7 / 10) - 50);
+                if (!scoreSet) {
+                    root.getChildren().add(addScore);
+                }
+                EventHandler<ActionEvent> addScoreEvent = new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    if (!multiplayer && !scoreSet) {
+                        String filestring = "" + snake1.getScore();
+                        for (int resultString = filestring.length(); resultString < 5; resultString++) {
+                            filestring = "0" + filestring;
+                        }
+                        filestring += " " + initialsString;
+                        try {
+                            writeSingleLine(scoreboard, filestring);
+                            System.out.println("Line written successfully!");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    root.getChildren().remove(addScore);
+                    scoreSet = true;
+                }
+            };
+            addScore.setOnAction(addScoreEvent);
+            }
 
-        root.getChildren().addAll(blackscreen, restart, gameOver);
-        if (!scoreSet) {
-            root.getChildren().add(addScore);
+            
+
+            EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent a) {
+                    root.getChildren().clear();
+                    Random foodCord = new Random();
+                    drawGrid(n, m);
+                    snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                    drawSnake(snake1);
+                    if (multiplayer) {
+                        snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
+                        drawSnake(snake2);
+                    }
+                    food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
+                    drawFood(food);
+                    gameOverEvent = false;
+                }
+            };
+            restart.setOnAction(event);
         }
-        EventHandler<ActionEvent> addScoreEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                if (!multiplayer && !scoreSet) {
-                    String filestring = "" + snake1.getScore();
-                    for (int resultString = filestring.length(); resultString < 5; resultString++) {
-                        filestring = "0" + filestring;
-                    }
-                    filestring += " " + initialsString;
-                    try {
-                        writeSingleLine(scoreboard, filestring);
-                        System.out.println("Line written successfully!");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                root.getChildren().remove(addScore);
-                scoreSet = true;
-            }
-        };
-        addScore.setOnAction(addScoreEvent);
 
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent a) {
-                Random foodCord = new Random();
-                root.getChildren().clear();
-                drawGrid(n, m);
-                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
-                drawSnake(snake1);
-                if (multiplayer) {
-                    snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
-                    drawSnake(snake2);
-                }
-                food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
-                drawFood(food);
-            }
-        };
-        restart.setOnAction(event);
     }
 
-    public void startScreen() throws FileNotFoundException{
+    public void startScreen() throws FileNotFoundException {
         // Title
         Label title = new Label("SNAKE");
         title.setFont(headFont);
@@ -361,8 +380,8 @@ public class GameRunner extends Application {
         Rectangle scoreBackground = new Rectangle(width / 2 + 40, height / 3 + 35, 200, 250);
         scoreBackground.setFill(Color.rgb(109, 74, 191));
         scoreBackground.setFill(Color.rgb(136, 91, 242));
-        //scoreBackground.setOpacity(0.75);
-        //scoreBackground.setFill(Color.WHITESMOKE);
+        // scoreBackground.setOpacity(0.75);
+        // scoreBackground.setFill(Color.WHITESMOKE);
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(checkFont);
         scoreBoard.relocate(width / 2 + 70, height / 3 + 35);
@@ -400,7 +419,7 @@ public class GameRunner extends Application {
                     fourth.setText("4. " + insertstring);
                     break;
                 case 4:
-                    fifth.setText("5, " + insertstring);
+                    fifth.setText("5. " + insertstring);
                     break;
 
                 default:
@@ -537,7 +556,7 @@ public class GameRunner extends Application {
         }
 
         // Custom comparator for sorting based on the 5-digit number
-        Comparator<String> comparator = Comparator.comparingInt(s -> Integer.parseInt(s.substring(0, 5)));
+        Comparator<String> comparator = Comparator.comparingInt(s -> Integer.parseInt(s.substring(0, 3)));
         comparator = comparator.reversed();
 
         // Sort the lines
