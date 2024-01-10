@@ -24,9 +24,9 @@ public class Snake extends ArrayList<Rectangle> {
         for(int i = 0; i < startLength; i++){
             super.add(new Rectangle((x / 2+i) * sC, ((y + 2*playerNumber) / 2) * sC, sC, sC));
             if(this.playerNumber == 0) {
-                super.get(i).setFill(Color.rgb(189, 217, 191));
+                super.get(i).setFill(Color.rgb(241,196,15));
             } else {
-                super.get(i).setFill(Color.rgb(255, 101, 66));
+                super.get(i).setFill(Color.rgb(0,204,102));
             }
         }
         this.direction = direction;
@@ -89,9 +89,9 @@ public class Snake extends ArrayList<Rectangle> {
         scoreIncrease();
         super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(),getSC()));
         if(this.playerNumber == 0) {
-            super.get(getLength()-1).setFill(Color.rgb(189, 217, 191));
+            super.get(getLength()-1).setFill(Color.rgb(241,196,14));
         } else {
-            super.get(getLength()-1).setFill(Color.rgb(255, 101, 66));
+            super.get(getLength()-1).setFill(Color.rgb(0,204,102));
         }
         
     }
@@ -104,7 +104,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public void selfCollide(){
-        for (int i = 1; i < getLength()-1; i++){
+        for (int i = 1; i < getLength(); i++){
             if((get(i).getX() == get(0).getX()) && (get(i).getY() == get(0).getY()) ){
                 this.alive = false;
             }
@@ -112,7 +112,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public boolean enemyCollide(Snake enemy) {
-        for (int i = 1; i < enemy.getLength()-1; i++){
+        for (int i = 1; i < enemy.getLength(); i++){
             if((enemy.get(i).getX() == get(0).getX()) && (enemy.get(i).getY() == get(0).getY()) ){
                 return true;
             }
