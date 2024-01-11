@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Snake extends ArrayList<Rectangle> {
     private Direction direction;
-    public int playerNumber;
+    private int playerNumber;
     private int x;
     private int y;
     private int score;
