@@ -62,7 +62,7 @@ public class Snake extends ArrayList<Rectangle> {
         super.get(getLength() - 1).setFill((this.playerNumber == 0) ? Color.rgb(241, 196, 14) : Color.rgb(0, 204, 102));
     }
 
-    public boolean foodCollision(Rectangle food) {
+    public boolean foodCollision(Food food) {
         if (food.getX() == get(0).getX() && food.getY() == get(0).getY()) {
             return true;
         }
