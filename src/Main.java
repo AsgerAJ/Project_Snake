@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
-public class GameRunner extends Application {
+public class Main extends Application {
 
     // Public variables
     public double scalingConstant;
@@ -356,7 +356,6 @@ public class GameRunner extends Application {
             };
             restart.setOnAction(event);
         }
-
     }
 
     public void startScreen() throws FileNotFoundException {
