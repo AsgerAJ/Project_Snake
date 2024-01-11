@@ -66,7 +66,6 @@ public class Main extends Application {
         System.out.println("Welcome to the snake game");
         try {
             sortFile(scoreboard);
-            System.out.println("File sorted successfully!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -326,7 +325,6 @@ public class Main extends Application {
                             filestring += " " + initialsString;
                             try {
                                 writeSingleLine(scoreboard, filestring);
-                                System.out.println("Line written successfully!");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
