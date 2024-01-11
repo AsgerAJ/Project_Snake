@@ -518,6 +518,7 @@ public class GameRunner extends Application {
                 scalingConstant = 20;
                 multiplayer = multi.selectedProperty().get();
                 initialsString = initials.getText();
+                startGame = true;
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
