@@ -20,5 +20,4 @@ public class Food extends Rectangle {
         setX(x * scalingConstant - scalingConstant);
         setY(y * scalingConstant - scalingConstant);
     }
-
 }
