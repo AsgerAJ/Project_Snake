@@ -32,6 +32,7 @@ public class GameRunner extends Application {
     public boolean startGame = false;
     public boolean scoreSet = false;
     public boolean gameIsStarted = false;
+    public boolean debugMode = false;
 
     // Private variables
     private Pane root;
@@ -48,7 +49,7 @@ public class GameRunner extends Application {
     private Font scoreFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 20);
     private Font miniFont = Font.loadFont("file:assets/fonts/Modak-Regular.ttf", 12);
     private Font scoreBoardFont = Font.loadFont("file:assets/fonts/LcdSolid-VpzB.ttf", 25);
- 
+
     private String scoreboard = "assets/scoreboard.txt";
     private String initialsString = "";
     private String winner;
@@ -109,7 +110,7 @@ public class GameRunner extends Application {
         };
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if(gameIsStarted) {
+            if (gameIsStarted) {
                 KeyCode code = event.getCode();
                 snake1.setTailCoords();
                 if (multiplayer) {
@@ -117,82 +118,88 @@ public class GameRunner extends Application {
                 }
                 switch (code) {
                     case UP:
-                        if (snake1.getAlive() 
-                        && snake1.getDirr() != Direction.Down
-                        && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive()
+                                && snake1.getDirr() != Direction.Down
+                                && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Up);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case DOWN:
-                        if (snake1.getAlive() 
-                        && snake1.getDirr() != Direction.Up
-                        && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive()
+                                && snake1.getDirr() != Direction.Up
+                                && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Down);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case LEFT:
-                        if (snake1.getAlive() 
-                        && snake1.getDirr() != Direction.Right
-                        && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive()
+                                && snake1.getDirr() != Direction.Right
+                                && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Left);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case RIGHT:
-                        if (snake1.getAlive() 
-                        && snake1.getDirr() != Direction.Left
-                        && !snake1.getDirectionWasChanged()) {
+                        if (snake1.getAlive()
+                                && snake1.getDirr() != Direction.Left
+                                && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Right);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case W:
                         if (multiplayer
-                        && snake2.getAlive() 
-                        && !snake2.getDirectionWasChanged()
-                        && snake2.getDirr() != Direction.Down) {
+                                && snake2.getAlive()
+                                && !snake2.getDirectionWasChanged()
+                                && snake2.getDirr() != Direction.Down) {
                             snake2.setCurrentDirection(Direction.Up);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case S:
                         if (multiplayer
-                        && snake2.getAlive() 
-                        && !snake2.getDirectionWasChanged()
-                        && snake2.getDirr() != Direction.Up) {
+                                && snake2.getAlive()
+                                && !snake2.getDirectionWasChanged()
+                                && snake2.getDirr() != Direction.Up) {
                             snake2.setCurrentDirection(Direction.Down);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case A:
                         if (multiplayer
-                        && snake2.getAlive() 
-                        && !snake2.getDirectionWasChanged()
-                        && snake2.getDirr() != Direction.Right) {
+                                && snake2.getAlive()
+                                && !snake2.getDirectionWasChanged()
+                                && snake2.getDirr() != Direction.Right) {
                             snake2.setCurrentDirection(Direction.Left);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case D:
                         if (multiplayer
-                        && snake2.getAlive() 
-                        && !snake2.getDirectionWasChanged()
-                        && snake2.getDirr() != Direction.Left) {
+                                && snake2.getAlive()
+                                && !snake2.getDirectionWasChanged()
+                                && snake2.getDirr() != Direction.Left) {
                             snake2.setCurrentDirection(Direction.Right);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case SPACE:
-                        snake1.Grow();
-                        root.getChildren().add(snake1.get(snake1.getLength() - 1));
+                        if (debugMode) {
+                            snake1.Grow();
+                            root.getChildren().add(snake1.get(snake1.getLength() - 1));
+                        }
+
                         break;
                     case G:
-                        snake1.setCurrentDirection(Direction.Stop);
-                        if (multiplayer) {
-                            snake2.setCurrentDirection(Direction.Stop);
+                        if (debugMode) {
+                            snake1.setCurrentDirection(Direction.Stop);
+                            if (multiplayer) {
+                                snake2.setCurrentDirection(Direction.Stop);
+                            }
                         }
+
                     default:
                         break;
                 }
@@ -213,8 +220,10 @@ public class GameRunner extends Application {
     public void drawGrid(int x, int y) { // Colours background
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant, scalingConstant);
-                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65) : Color.rgb(37, 42, 39));
+                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
+                        scalingConstant);
+                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65)
+                        : Color.rgb(37, 42, 39));
                 root.getChildren().add(back);
             }
         }
@@ -254,7 +263,7 @@ public class GameRunner extends Application {
                         randY = rand.nextInt(m);
                         for (int i = 0; i < snake.getLength(); i++) {
                             if (snake.get(i).getX() / scalingConstant == randX
-                            && snake.get(i).getY() / scalingConstant == randY) {
+                                    && snake.get(i).getY() / scalingConstant == randY) {
                                 validSpawn = false;
                                 continue;
                             }
@@ -292,12 +301,12 @@ public class GameRunner extends Application {
             if (!multiplayer) {
                 Label playerScore = new Label();
                 playerScore.setText("" + snake1.getScore());
-                playerScore.setFont(Font.font("Futura", FontWeight.BOLD, width/3));
+                playerScore.setFont(Font.font("Futura", FontWeight.BOLD, width / 3));
                 playerScore.setTextFill(Color.rgb(115, 147, 126));
-                if (snake1.getScore()<10){
-                playerScore.relocate(width/15*6, height/15*4);
+                if (snake1.getScore() < 10) {
+                    playerScore.relocate(width / 15 * 6, height / 15 * 4);
                 } else {
-                playerScore.relocate(width/15*4, height/15*4); 
+                    playerScore.relocate(width / 15 * 4, height / 15 * 4);
                 }
                 root.getChildren().add(playerScore);
                 addScore = new Button("Add score to scoreboard");
@@ -388,7 +397,8 @@ public class GameRunner extends Application {
         clearInitials.relocate(scalingConstant * 8.75, scalingConstant * 7);
 
         // scoreboard
-        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6, scalingConstant * 8);
+        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6,
+                scalingConstant * 8);
         scoreBackground.setFill(Color.rgb(115, 147, 126));
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(scoreBoardFont);
@@ -435,7 +445,8 @@ public class GameRunner extends Application {
                     break;
             }
         }
-        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground, scoreBoard, first, second, third, fourth, fifth);
+        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground,
+                scoreBoard, first, second, third, fourth, fifth);
         scoreScanner.close();
 
         EventHandler<ActionEvent> clearInitialHandler = new EventHandler<ActionEvent>() {
@@ -496,7 +507,7 @@ public class GameRunner extends Application {
             }
         };
         medium.setOnAction(sizeSelectMedium);
-        
+
         EventHandler<ActionEvent> sizeSelectLarge = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
                 gameIsStarted = true;
@@ -575,6 +586,7 @@ public class GameRunner extends Application {
 
     public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException {
         Path outputPath = Paths.get(outputFile);
-        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE, StandardOpenOption.APPEND);
     }
 }
