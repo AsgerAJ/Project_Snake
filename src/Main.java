@@ -213,7 +213,6 @@ public class Main extends Application {
         Thread gameThread = new Thread(snakeStepper);
         gameThread.setDaemon(true);
         gameThread.start();
-
     }
 
     public void drawGrid(int x, int y) { // Colours background
@@ -228,15 +227,15 @@ public class Main extends Application {
         }
     }
 
-    public void drawSnake(Snake snake) {
+    public void drawSnake(Snake snake) { // draws the snake on gameboard
         root.getChildren().addAll(snake);
     }
 
-    public void drawFood(Food food) {
+    public void drawFood(Food food) { // draws food on gameboard
         root.getChildren().add(food);
     }
 
-    public void stepHandler(Snake snake) {
+    public void stepHandler(Snake snake) { // updates the snakes position and runs checks for game events.
         Random rand = new Random();
         if (startGame) {
             Platform.runLater(() -> {
@@ -275,7 +274,7 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver() throws FileNotFoundException {
+    public void gameOver() throws FileNotFoundException { // shows gameover screen
         if (!gameOverEvent) {
             gameOverEvent = true;
             Rectangle blackscreen = new Rectangle(0, 0, width, height);
@@ -356,7 +355,7 @@ public class Main extends Application {
         }
     }
 
-    public void startScreen() throws FileNotFoundException {
+    public void startScreen() throws FileNotFoundException { // shows start screen
         // Title
         Label title = new Label("SNAKE");
         title.setFont(headFont);
@@ -455,13 +454,17 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> sizeSelectSmall = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
+                multiplayer = multi.selectedProperty().get();
+                if(multiplayer){
+                    initials.clear();
+                }
                 gameIsStarted = true;
                 root.getChildren().clear();
                 Random foodCord = new Random();
                 n = 8;
                 m = 8;
                 scalingConstant = 75;
-                multiplayer = multi.selectedProperty().get();
+
                 initialsString = initials.getText();
                 startGame = true;
                 drawGrid(n, m);
@@ -481,13 +484,16 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> sizeSelectMedium = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
+                multiplayer = multi.selectedProperty().get();
+                if(multiplayer){
+                    initials.clear();
+                }
                 gameIsStarted = true;
                 root.getChildren().clear();
                 Random foodCord = new Random();
                 n = 15;
                 m = 15;
                 scalingConstant = 40;
-                multiplayer = multi.selectedProperty().get();
                 initialsString = initials.getText();
                 startGame = true;
                 drawGrid(n, m);
@@ -507,13 +513,16 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> sizeSelectLarge = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
+                multiplayer = multi.selectedProperty().get();
+                if(multiplayer){
+                    initials.clear();
+                }
                 gameIsStarted = true;
                 root.getChildren().clear();
                 Random foodCord = new Random();
                 n = 30;
                 m = 30;
                 scalingConstant = 20;
-                multiplayer = multi.selectedProperty().get();
                 initialsString = initials.getText();
                 startGame = true;
                 drawGrid(n, m);
@@ -532,7 +541,7 @@ public class Main extends Application {
         large.setOnAction(sizeSelectLarge);
     }
 
-    public void displayScore(Snake snake) {
+    public void displayScore(Snake snake) { // shows the score
         score = new Label();
         score.setText("" + snake.getScore());
         score.setFont(Font.font("Futura", FontWeight.BOLD, scalingConstant));
@@ -541,13 +550,13 @@ public class Main extends Application {
         root.getChildren().add(score);
     }
 
-    public void updateScore(Snake snake) {
+    public void updateScore(Snake snake) { // updates the score
         root.getChildren().remove(score);
         score.setText("" + snake.getScore());
         root.getChildren().add(score);
     }
 
-    public void eat(Snake snake) {
+    public void eat(Snake snake) { // handles snake growth
         snake.Grow();
         if (!multiplayer) {
             updateScore(snake);
@@ -555,7 +564,7 @@ public class Main extends Application {
         root.getChildren().add(snake.get(snake.getLength() - 1));
     }
 
-    public static void sortFile(String inputFile) throws IOException {
+    public static void sortFile(String inputFile) throws IOException { // sorts the scoreboard file
         List<String> lines = new ArrayList<>();
 
         // Read lines from the input file
@@ -582,7 +591,7 @@ public class Main extends Application {
         }
     }
 
-    public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException {
+    public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException { // writes a single line in the scoreboard file
         Path outputPath = Paths.get(outputFile);
         Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE, StandardOpenOption.APPEND);
