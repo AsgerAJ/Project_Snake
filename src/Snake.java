@@ -14,6 +14,10 @@ public class Snake extends ArrayList<Rectangle> {
     private double tailY;
     private boolean alive;
 
+    /*
+    * Constructs a snake:
+    * Main Responsible: Team effort 
+    */
     public Snake(int x, int y, double sC, Direction direction, int score, int startLength, int playerNumber) {
         this.x = x;
         this.y = y;
@@ -28,7 +32,10 @@ public class Snake extends ArrayList<Rectangle> {
         setTailCoords();
         this.alive = true;
     }
-
+    /*
+    * Moves the snake
+    * Main Responsible: Lovro & Lizette
+    */
     public void moveSnake(Direction newDirection) {
         switch (newDirection) {
             case Up:
@@ -55,20 +62,29 @@ public class Snake extends ArrayList<Rectangle> {
                 break;
         }
     }
-
+    /*
+    * Grows the snake with one
+    * Main Responsible: Asger
+    */
     public void Grow() {
         scoreIncrease();
         super.add(new Rectangle(super.get(getLength() - 1).getX(), super.get(getLength() - 1).getY(), getSC(), getSC()));
         super.get(getLength() - 1).setFill((this.playerNumber == 0) ? Color.rgb(241, 196, 14) : Color.rgb(0, 204, 102));
     }
-
+    /*
+    * Checks if snake head collides with fruit
+    * Main Responsible: Asger & Lizette
+    */
     public boolean foodCollision(Food food) {
         if (food.getX() == get(0).getX() && food.getY() == get(0).getY()) {
             return true;
         }
         return false;
     }
-
+    /*
+    * Checks if snake head collides with fruit
+    * Main Responsible: Asger & Lizette
+    */
     public void selfCollide() {
         for (int i = 1; i < getLength(); i++) {
             if ((get(i).getX() == get(0).getX()) && (get(i).getY() == get(0).getY())) {
@@ -77,6 +93,10 @@ public class Snake extends ArrayList<Rectangle> {
         }
     }
 
+    /*
+     * Checks if a snake collides with another snake
+     * Main responsible: Lovro
+     */
     public boolean enemyCollide(Snake enemy) {
         for (int i = 0; i < enemy.getLength(); i++) {
             if ((enemy.get(i).getX() == get(0).getX()) && (enemy.get(i).getY() == get(0).getY())) {
@@ -86,6 +106,11 @@ public class Snake extends ArrayList<Rectangle> {
         return false;
     }
 
+    /*
+     * Rest of methods
+     * Main responsible: Team effort
+     */
+    
     public Direction getDirr() {
         return this.direction;
     }

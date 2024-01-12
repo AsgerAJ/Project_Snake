@@ -82,8 +82,12 @@ public class Main extends Application {
         width = scalingConstant * n;
         height = scalingConstant * m;
         Scene scene = new Scene(root, width, height);
-
-        Runnable snakeStepper = () -> { //commands for execution every 100ms of the thread
+        
+        /*
+         * Executes stephandler every 100 ms, to make the snake move automatically.
+         * Main Responsible: Asger
+         */
+        Runnable snakeStepper = () -> {
             try {
                 while (true) {
                     stepHandler(snake1);
@@ -96,6 +100,10 @@ public class Main extends Application {
             }
         };
 
+        /*
+         * Button input
+         * Main responsible: Lovro
+         */
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (gameIsStarted) {
                 KeyCode code = event.getCode();
@@ -202,12 +210,17 @@ public class Main extends Application {
         gameThread.setDaemon(true);
         gameThread.start();
     }
-
-    public void drawGrid(int x, int y) { // Colours background
+    /*
+    * Creates grid pattern on gameboard
+    * Main responsible: Asger
+    */
+    public void drawGrid(int x, int y) { 
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant, scalingConstant);
-                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65): Color.rgb(37, 42, 39));
+                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
+                        scalingConstant);
+                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65)
+                        : Color.rgb(37, 42, 39));
                 root.getChildren().add(back);
             }
         }
@@ -221,7 +234,12 @@ public class Main extends Application {
         root.getChildren().add(food);
     }
 
-    public void stepHandler(Snake snake) { // updates the snakes position and runs checks for game events.
+    /*
+     * Updates the snakes position and runs checks for game events
+     * Main responsible: Team effort
+     * Food spawn and multiplayer: Lovro
+     */
+    public void stepHandler(Snake snake) {
         Random rand = new Random();
         if (startGame) {
             Platform.runLater(() -> {
@@ -257,7 +275,7 @@ public class Main extends Application {
                         randY = rand.nextInt(m);
                         for (int i = 0; i < snake.getLength(); i++) {
                             if (snake.get(i).getX() / scalingConstant == randX
-                            && snake.get(i).getY() / scalingConstant == randY) {
+                                    && snake.get(i).getY() / scalingConstant == randY) {
                                 validSpawn = false;
                                 continue;
                             }
@@ -269,8 +287,13 @@ public class Main extends Application {
             });
         }
     }
-
-    public void gameOver() { // shows gameover screen
+    
+    /*
+     * shows gameover screen 
+     * Main responsible: Johan & Lizette
+     * Scoreboard implementation: Asger
+     */
+    public void gameOver() { 
         if (!gameOverEvent) {
             gameOverEvent = true;
             Rectangle blackscreen = new Rectangle(0, 0, width, height);
@@ -351,7 +374,12 @@ public class Main extends Application {
         }
     }
 
-    public void startScreen() throws FileNotFoundException { // shows start screen
+    /*
+     * shows start screen
+     * Main responsible: Lizette & Johan.
+     * Scoreboard implementation: Asger
+     */
+    public void startScreen() throws FileNotFoundException { 
         // Title
         Label title = new Label("SNAKE");
         title.setFont(headFont);
@@ -389,7 +417,8 @@ public class Main extends Application {
         clearInitials.relocate(scalingConstant * 8.75, scalingConstant * 7);
 
         // scoreboard
-        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6, scalingConstant * 8);
+        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6,
+                scalingConstant * 8);
         scoreBackground.setFill(Color.rgb(115, 147, 126));
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(scoreBoardFont);
@@ -436,7 +465,8 @@ public class Main extends Application {
                     break;
             }
         }
-        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground, scoreBoard, first, second, third, fourth, fifth);
+        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground,
+                scoreBoard, first, second, third, fourth, fifth);
         scoreScanner.close();
 
         EventHandler<ActionEvent> clearInitialHandler = new EventHandler<ActionEvent>() {
@@ -446,6 +476,9 @@ public class Main extends Application {
         };
         clearInitials.setOnAction(clearInitialHandler);
 
+        /*
+         * Starts a game with a 8x8 playboard
+         */
         EventHandler<ActionEvent> sizeSelectSmall = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
                 multiplayer = multi.selectedProperty().get();
@@ -476,6 +509,9 @@ public class Main extends Application {
         };
         small.setOnAction(sizeSelectSmall);
 
+        /*
+         * Starts a game with a 15x15 gameboard
+         */
         EventHandler<ActionEvent> sizeSelectMedium = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
                 multiplayer = multi.selectedProperty().get();
@@ -505,6 +541,9 @@ public class Main extends Application {
         };
         medium.setOnAction(sizeSelectMedium);
 
+        /*
+         * Starts a game with 30x30 gameboard
+         */
         EventHandler<ActionEvent> sizeSelectLarge = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent size) {
                 multiplayer = multi.selectedProperty().get();
@@ -534,8 +573,12 @@ public class Main extends Application {
         };
         large.setOnAction(sizeSelectLarge);
     }
-
-    public void displayScore(Snake snake) { // shows the score
+    
+    /*
+     * Shows the score
+     * Main responsible: Johan
+     */
+    public void displayScore(Snake snake) {
         score = new Label();
         score.setText("" + snake.getScore());
         score.setFont(Font.font("Futura", FontWeight.BOLD, scalingConstant));
@@ -544,13 +587,22 @@ public class Main extends Application {
         root.getChildren().add(score);
     }
 
-    public void updateScore(Snake snake) { // updates the score
+    /*
+    * Update score
+    * Main responsible: Johan
+    */
+    public void updateScore(Snake snake) { 
         root.getChildren().remove(score);
         score.setText("" + snake.getScore());
         root.getChildren().add(score);
     }
 
-    public void eat(Snake snake) { // handles snake growth
+
+    /*
+     * Handles snake growth
+     * Main responsible: Team effort
+     */
+    public void eat(Snake snake) { 
         snake.Grow();
         if (!multiplayer) {
             updateScore(snake);
@@ -558,7 +610,11 @@ public class Main extends Application {
         root.getChildren().add(snake.get(snake.getLength() - 1));
     }
 
-    public static void sortFile(String inputFile) throws IOException { // sorts the scoreboard file
+    /*
+     * Sorts the scoreboard file.
+     * Main responsible: Asger
+     */
+    public static void sortFile(String inputFile) throws IOException {
         List<String> lines = new ArrayList<>();
 
         // Read lines from the input file
@@ -585,12 +641,14 @@ public class Main extends Application {
         }
     }
 
-    public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException { // writes a single line in the scoreboard file
+     /*
+     * Writes a single line in the scoreboard file.
+     * Main responsible: Asger
+     */
+    public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException {
         Path outputPath = Paths.get(outputFile);
-        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE, StandardOpenOption.APPEND);
     }
 
-    public void showGO(){
-        gameOver();
-    }
 }
