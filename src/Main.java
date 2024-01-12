@@ -32,7 +32,7 @@ public class Main extends Application {
     public boolean startGame = false;
     public boolean scoreSet = false;
     public boolean gameIsStarted = false;
-    public boolean debugMode = true;
+    public boolean debugMode = false;
 
     // Private variables
     private Pane root;
