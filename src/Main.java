@@ -83,7 +83,8 @@ public class Main extends Application {
         width = scalingConstant * n;
         height = scalingConstant * m;
         Scene scene = new Scene(root, width, height);
-        Runnable snakeStepper = () -> {
+
+        Runnable snakeStepper = () -> { //commands for execution every 100ms of the thread
             try {
                 while (true) {
                     stepHandler(snake1);
@@ -246,11 +247,7 @@ public class Main extends Application {
                 if (!snake.getAlive()) {
                     snake.setCurrentDirection(Direction.Stop);
                     snake.murder();
-                    try {
-                        gameOver();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    gameOver();
                 } else if (snake.foodCollision(food)) {
                     boolean validSpawn = false;
                     int randX = rand.nextInt(n);
@@ -274,7 +271,7 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver() throws FileNotFoundException { // shows gameover screen
+    public void gameOver() { // shows gameover screen
         if (!gameOverEvent) {
             gameOverEvent = true;
             Rectangle blackscreen = new Rectangle(0, 0, width, height);
