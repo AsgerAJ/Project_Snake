@@ -368,6 +368,7 @@ public class Main extends Application {
                     food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                     drawFood(food);
                     gameOverEvent = false;
+                    scoreSet = false;
                 }
             };
             restart.setOnAction(event);
