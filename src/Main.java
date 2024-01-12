@@ -497,7 +497,7 @@ public class Main extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 1);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
                 drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
