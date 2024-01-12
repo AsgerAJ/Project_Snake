@@ -89,18 +89,6 @@ public class Main extends Application {
                     stepHandler(snake1);
                     if (multiplayer) {
                         stepHandler(snake2);
-                        if ((snake1.enemyCollide(snake2)) || !snake2.getAlive()) {
-                            snake1.setCurrentDirection(Direction.Stop);
-                            snake2.setCurrentDirection(Direction.Stop);
-                            snake1.murder();
-                            winner = "Player 2";
-                        }
-                        if ((snake2.enemyCollide(snake1)) || !snake1.getAlive()) {
-                            snake2.setCurrentDirection(Direction.Stop);
-                            snake1.setCurrentDirection(Direction.Stop);
-                            snake2.murder();
-                            winner = "Player 1";
-                        }
                     }
                     Thread.sleep(100);
                 }
@@ -243,7 +231,24 @@ public class Main extends Application {
                 snake.moveSnake(snake.getDirr());
                 Collections.rotate(snake, 1);
                 snake.selfCollide();
-                if (!snake.getAlive()) {
+                if(multiplayer){
+                    if(multiplayer){
+                        if ((snake1.enemyCollide(snake2)) || !snake1.getAlive()) {
+                            snake1.setCurrentDirection(Direction.Stop);
+                            snake2.setCurrentDirection(Direction.Stop);
+                            snake1.murder();
+                            winner = "Player 2";
+                            gameOver();
+                        } else if ((snake2.enemyCollide(snake1)) || !snake2.getAlive()) {
+                            snake2.setCurrentDirection(Direction.Stop);
+                            snake1.setCurrentDirection(Direction.Stop);
+                            snake2.murder();
+                            winner = "Player 1";
+                            gameOver();
+                        }
+                    }
+                } 
+                if (!multiplayer && !snake.getAlive()) {
                     snake.setCurrentDirection(Direction.Stop);
                     gameOver();
                 } else if (snake.foodCollision(food)) {
@@ -590,5 +595,9 @@ public class Main extends Application {
         Path outputPath = Paths.get(outputFile);
         Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+    }
+
+    public void showGO(){
+        gameOver();
     }
 }
