@@ -89,15 +89,15 @@ public class Main extends Application {
                     stepHandler(snake1);
                     if (multiplayer) {
                         stepHandler(snake2);
-                        if (snake1.enemyCollide(snake2)) {
+                        if ((snake1.enemyCollide(snake2)) || !snake2.getAlive()) {
                             snake1.setCurrentDirection(Direction.Stop);
                             snake2.setCurrentDirection(Direction.Stop);
                             snake1.murder();
                             winner = "Player 2";
                         }
-                        if (snake2.enemyCollide(snake1)) {
-                            snake1.setCurrentDirection(Direction.Stop);
+                        if ((snake2.enemyCollide(snake1)) || !snake1.getAlive()) {
                             snake2.setCurrentDirection(Direction.Stop);
+                            snake1.setCurrentDirection(Direction.Stop);
                             snake2.murder();
                             winner = "Player 1";
                         }
@@ -244,13 +244,6 @@ public class Main extends Application {
                 Collections.rotate(snake, 1);
                 snake.selfCollide();
                 if (!snake.getAlive()) {
-                    if(multiplayer){
-                        if(snake.getPlayerNumber()==1){
-                            winner = "Player 1";
-                        }else{
-                            winner = "Player 2";
-                        }
-                    }
                     snake.setCurrentDirection(Direction.Stop);
                     gameOver();
                 } else if (snake.foodCollision(food)) {
