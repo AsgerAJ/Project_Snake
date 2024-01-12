@@ -206,10 +206,8 @@ public class Main extends Application {
     public void drawGrid(int x, int y) { // Colours background
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant,
-                        scalingConstant);
-                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65)
-                        : Color.rgb(37, 42, 39));
+                Rectangle back = new Rectangle(i * scalingConstant, j * scalingConstant, scalingConstant, scalingConstant);
+                back.setFill((((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0))) ? Color.rgb(61, 66, 65): Color.rgb(37, 42, 39));
                 root.getChildren().add(back);
             }
         }
@@ -261,7 +259,7 @@ public class Main extends Application {
                         randY = rand.nextInt(m);
                         for (int i = 0; i < snake.getLength(); i++) {
                             if (snake.get(i).getX() / scalingConstant == randX
-                                    && snake.get(i).getY() / scalingConstant == randY) {
+                            && snake.get(i).getY() / scalingConstant == randY) {
                                 validSpawn = false;
                                 continue;
                             }
@@ -393,8 +391,7 @@ public class Main extends Application {
         clearInitials.relocate(scalingConstant * 8.75, scalingConstant * 7);
 
         // scoreboard
-        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6,
-                scalingConstant * 8);
+        Rectangle scoreBackground = new Rectangle(scalingConstant * 12, scalingConstant * 7, scalingConstant * 6, scalingConstant * 8);
         scoreBackground.setFill(Color.rgb(115, 147, 126));
         Label scoreBoard = new Label("Scoreboard");
         scoreBoard.setFont(scoreBoardFont);
@@ -441,8 +438,7 @@ public class Main extends Application {
                     break;
             }
         }
-        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground,
-                scoreBoard, first, second, third, fourth, fifth);
+        root.getChildren().addAll(title, multi, small, medium, large, initials, clearInitials, scoreBackground, scoreBoard, first, second, third, fourth, fifth);
         scoreScanner.close();
 
         EventHandler<ActionEvent> clearInitialHandler = new EventHandler<ActionEvent>() {
@@ -593,8 +589,7 @@ public class Main extends Application {
 
     public static void writeSingleLine(String outputFile, String lineToWrite) throws IOException { // writes a single line in the scoreboard file
         Path outputPath = Paths.get(outputFile);
-        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+        Files.write(outputPath, (lineToWrite + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
     }
 
     public void showGO(){
