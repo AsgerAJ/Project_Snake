@@ -229,23 +229,21 @@ public class Main extends Application {
                 snake.moveSnake(snake.getDirr());
                 Collections.rotate(snake, 1);
                 snake.selfCollide();
-                if(multiplayer){
-                    if(multiplayer){
-                        if ((snake1.enemyCollide(snake2)) || !snake1.getAlive()) {
-                            snake1.setCurrentDirection(Direction.Stop);
-                            snake2.setCurrentDirection(Direction.Stop);
-                            snake1.murder();
-                            winner = "Player 2";
-                            gameOver();
-                        } else if ((snake2.enemyCollide(snake1)) || !snake2.getAlive()) {
-                            snake2.setCurrentDirection(Direction.Stop);
-                            snake1.setCurrentDirection(Direction.Stop);
-                            snake2.murder();
-                            winner = "Player 1";
-                            gameOver();
-                        }
-                    }
-                } 
+                if ((multiplayer && snake1.enemyCollide(snake2)) 
+                || multiplayer && !snake1.getAlive()) {
+                    snake1.setCurrentDirection(Direction.Stop);
+                    snake2.setCurrentDirection(Direction.Stop);
+                    snake1.murder();
+                    winner = "Player 2";
+                    gameOver();
+                } else if (multiplayer && (snake2.enemyCollide(snake1))
+                || multiplayer && !snake2.getAlive()) {
+                    snake2.setCurrentDirection(Direction.Stop);
+                    snake1.setCurrentDirection(Direction.Stop);
+                    snake2.murder();
+                    winner = "Player 1";
+                    gameOver();
+                }
                 if (!multiplayer && !snake.getAlive()) {
                     snake.setCurrentDirection(Direction.Stop);
                     gameOver();
