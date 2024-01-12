@@ -1,0 +1,12 @@
+{
+    "java.project.sourcePaths": [
+        "src",
+    ],
+    "java.project.referencedLibraries": [
+        {
+            "path": "${workspaceFolder}/src/assets",
+            "sourcePath": "/src/assets",
+            "libraryName": "assets"
+        }
+    ]
+}
