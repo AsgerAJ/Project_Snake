@@ -55,7 +55,6 @@ public class Main extends Application {
     private String winner;
     private Button addScore;
     private boolean gameOverEvent = false;
-    // private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -119,68 +118,68 @@ public class Main extends Application {
                 switch (code) {
                     case UP:
                         if (snake1.getAlive()
-                                && snake1.getDirr() != Direction.Down
-                                && !snake1.getDirectionWasChanged()) {
+                        && snake1.getDirr() != Direction.Down
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Up);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case DOWN:
                         if (snake1.getAlive()
-                                && snake1.getDirr() != Direction.Up
-                                && !snake1.getDirectionWasChanged()) {
+                        && snake1.getDirr() != Direction.Up
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Down);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case LEFT:
                         if (snake1.getAlive()
-                                && snake1.getDirr() != Direction.Right
-                                && !snake1.getDirectionWasChanged()) {
+                        && snake1.getDirr() != Direction.Right
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Left);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case RIGHT:
                         if (snake1.getAlive()
-                                && snake1.getDirr() != Direction.Left
-                                && !snake1.getDirectionWasChanged()) {
+                        && snake1.getDirr() != Direction.Left
+                        && !snake1.getDirectionWasChanged()) {
                             snake1.setCurrentDirection(Direction.Right);
                             snake1.setDirectionWasChanged(true);
                         }
                         break;
                     case W:
                         if (multiplayer
-                                && snake2.getAlive()
-                                && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Down) {
+                        && snake2.getAlive()
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Down) {
                             snake2.setCurrentDirection(Direction.Up);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case S:
                         if (multiplayer
-                                && snake2.getAlive()
-                                && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Up) {
+                        && snake2.getAlive()
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Up) {
                             snake2.setCurrentDirection(Direction.Down);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case A:
                         if (multiplayer
-                                && snake2.getAlive()
-                                && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Right) {
+                        && snake2.getAlive()
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Right) {
                             snake2.setCurrentDirection(Direction.Left);
                             snake2.setDirectionWasChanged(true);
                         }
                         break;
                     case D:
                         if (multiplayer
-                                && snake2.getAlive()
-                                && !snake2.getDirectionWasChanged()
-                                && snake2.getDirr() != Direction.Left) {
+                        && snake2.getAlive()
+                        && !snake2.getDirectionWasChanged()
+                        && snake2.getDirr() != Direction.Left) {
                             snake2.setCurrentDirection(Direction.Right);
                             snake2.setDirectionWasChanged(true);
                         }
