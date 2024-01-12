@@ -32,7 +32,7 @@ public class Main extends Application {
     public boolean startGame = false;
     public boolean scoreSet = false;
     public boolean gameIsStarted = false;
-    public boolean debugMode = false;
+    public boolean debugMode = true;
 
     // Private variables
     private Pane root;
@@ -244,8 +244,14 @@ public class Main extends Application {
                 Collections.rotate(snake, 1);
                 snake.selfCollide();
                 if (!snake.getAlive()) {
+                    if(multiplayer){
+                        if(snake.getPlayerNumber()==1){
+                            winner = "Player 1";
+                        }else{
+                            winner = "Player 2";
+                        }
+                    }
                     snake.setCurrentDirection(Direction.Stop);
-                    snake.murder();
                     gameOver();
                 } else if (snake.foodCollision(food)) {
                     boolean validSpawn = false;
@@ -466,7 +472,7 @@ public class Main extends Application {
                 drawGrid(n, m);
                 food = new Food(foodCord.nextInt(n) + 1, foodCord.nextInt(m) + 1, scalingConstant);
                 drawFood(food);
-                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 0);
+                snake1 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 1);
                 drawSnake(snake1);
                 if (multiplayer) {
                     snake2 = new Snake(n, m, scalingConstant, Direction.Stop, 0, 2, 2);
