@@ -55,7 +55,6 @@ public class Main extends Application {
     private String winner;
     private Button addScore;
     private boolean gameOverEvent = false;
-    // private boolean directionWasChanged = false;
 
     public static void main(String[] args) {
         launch(args);

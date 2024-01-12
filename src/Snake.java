@@ -78,7 +78,7 @@ public class Snake extends ArrayList<Rectangle> {
     }
 
     public boolean enemyCollide(Snake enemy) {
-        for (int i = 1; i < enemy.getLength(); i++) {
+        for (int i = 0; i < enemy.getLength(); i++) {
             if ((enemy.get(i).getX() == get(0).getX()) && (enemy.get(i).getY() == get(0).getY())) {
                 return true;
             }
